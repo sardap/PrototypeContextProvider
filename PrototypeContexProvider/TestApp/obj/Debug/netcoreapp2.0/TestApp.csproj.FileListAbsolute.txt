@@ -1,0 +1,14 @@
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\TestApp\obj\Debug\netcoreapp2.0\TestApp.csprojAssemblyReference.cache
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\TestApp\obj\Debug\netcoreapp2.0\TestApp.csproj.CoreCompileInputs.cache
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\TestApp\obj\Debug\netcoreapp2.0\TestApp.AssemblyInfoInputs.cache
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\TestApp\obj\Debug\netcoreapp2.0\TestApp.AssemblyInfo.cs
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\TestApp\bin\Debug\netcoreapp2.0\TestApp.deps.json
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\TestApp\bin\Debug\netcoreapp2.0\TestApp.runtimeconfig.json
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\TestApp\bin\Debug\netcoreapp2.0\TestApp.runtimeconfig.dev.json
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\TestApp\bin\Debug\netcoreapp2.0\TestApp.dll
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\TestApp\bin\Debug\netcoreapp2.0\TestApp.pdb
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\TestApp\bin\Debug\netcoreapp2.0\PrototypeContexProvider.dll
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\TestApp\bin\Debug\netcoreapp2.0\PrototypeContexProvider.pdb
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\TestApp\obj\Debug\netcoreapp2.0\TestApp.csproj.CopyComplete
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\TestApp\obj\Debug\netcoreapp2.0\TestApp.dll
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\TestApp\obj\Debug\netcoreapp2.0\TestApp.pdb

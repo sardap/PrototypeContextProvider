@@ -4,8 +4,7 @@ using System.Text;
 
 namespace PrototypeContexProvider.src
 {
-    public enum ContexOperator
+    interface ITurny
     {
-		Equal, Greater, GreaterOrEqual, Less, LessOrEqual
-	}
+    }
 }

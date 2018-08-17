@@ -1,0 +1,9 @@
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\PrototypeContexProvider\obj\Debug\netcoreapp2.0\PrototypeContexProvider.csprojAssemblyReference.cache
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\PrototypeContexProvider\obj\Debug\netcoreapp2.0\PrototypeContexProvider.csproj.CoreCompileInputs.cache
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\PrototypeContexProvider\obj\Debug\netcoreapp2.0\PrototypeContexProvider.AssemblyInfoInputs.cache
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\PrototypeContexProvider\obj\Debug\netcoreapp2.0\PrototypeContexProvider.AssemblyInfo.cs
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\PrototypeContexProvider\bin\Debug\netcoreapp2.0\PrototypeContexProvider.deps.json
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\PrototypeContexProvider\bin\Debug\netcoreapp2.0\PrototypeContexProvider.dll
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\PrototypeContexProvider\bin\Debug\netcoreapp2.0\PrototypeContexProvider.pdb
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\PrototypeContexProvider\obj\Debug\netcoreapp2.0\PrototypeContexProvider.dll
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\PrototypeContexProvider\obj\Debug\netcoreapp2.0\PrototypeContexProvider.pdb

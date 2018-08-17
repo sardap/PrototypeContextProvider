@@ -7,10 +7,22 @@ namespace TestApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+			var contexTest = new Contex<long>
+			{
+				ContextProvider = new TimeContextProvider { SelectedTimeZone = TimeZoneInfo.Local },
+				Operator = new ContexEqual<long>(),
+				Value = 1534506720
+			};
 
-			Contex<int> contexTest = new Contex<int>();
+			while(!contexTest.Check())
+			{
+				Console.WriteLine(new TimeContextProvider { SelectedTimeZone = TimeZoneInfo.Local }.GetValue());
 
-        }
+			}
+
+			Console.WriteLine("Shit");
+
+			Console.ReadLine();
+		}
     }
 }

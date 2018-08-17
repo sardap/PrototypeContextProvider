@@ -4,13 +4,13 @@ using System.Text;
 
 namespace PrototypeContexProvider.src
 {
-    public class Contex<T> where T : ValueType
+	public class Contex<T>
 	{
 		private string _name;
-		private T _value;
-		private ContexOperator _operator;
 
-		public IContextProvider<T> ContextProvider	{ get; set; }
+		public IContextProvider<T> ContextProvider { get; set; }
+		public T Value { get; set; }
+		public IContexOperator<T> Operator { get; set; }
 
 		public Contex()
 		{
@@ -18,7 +18,7 @@ namespace PrototypeContexProvider.src
 
 		public bool Check()
 		{
-			return _value == ContextProvider.GetValue();
+			return Operator.Resolve(Value, ContextProvider.GetValue());
 		}
 	}
 }
