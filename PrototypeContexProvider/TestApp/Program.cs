@@ -10,14 +10,13 @@ namespace TestApp
 			var contexTest = new Contex<long>
 			{
 				ContextProvider = new TimeContextProvider { SelectedTimeZone = TimeZoneInfo.Local },
-				Operator = new ContexEqual<long>(),
-				Value = 1534506720
+				Operator = new ContexLessThanOrEqual<long>(),
+				Value = 1534511400
 			};
 
-			while(!contexTest.Check())
+			while(contexTest.Check())
 			{
 				Console.WriteLine(new TimeContextProvider { SelectedTimeZone = TimeZoneInfo.Local }.GetValue());
-
 			}
 
 			Console.WriteLine("Shit");
