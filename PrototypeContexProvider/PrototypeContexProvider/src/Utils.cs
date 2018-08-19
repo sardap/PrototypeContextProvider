@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PrototypeContexProvider.src
 {
@@ -17,5 +20,15 @@ namespace PrototypeContexProvider.src
 		{
 			return ((!a) && b) || (a && (!b));
 		}
-    }
+
+		public static async Task<object> ReadFromJson(string filePath)
+		{
+			using (StreamReader r = new StreamReader(filePath))
+			{
+				string json = await r.ReadToEndAsync();
+				return await Task.Run(() => JsonConvert.DeserializeObject(json));
+			}
+		}
+
+	}
 }
