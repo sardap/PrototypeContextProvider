@@ -9,7 +9,7 @@ namespace PrototypeContexProvider.src
 		private string _name;
 
 		public IContextProvider<T> ContextProvider { get; set; }
-		public T Value { get; set; }
+		public T GivenValue { get; set; }
 		public IContexOperator<T> Operator { get; set; }
 
 		public Contex()
@@ -18,7 +18,7 @@ namespace PrototypeContexProvider.src
 
 		public bool Check()
 		{
-			return Operator.Resolve(Value, ContextProvider.GetValue());
+			return Operator.Resolve(ContextProvider.GetValue(), GivenValue);
 		}
 	}
 }

@@ -7,19 +7,30 @@ namespace TestApp
     {
         static void Main(string[] args)
         {
-			var contexTest = new Contex<long>
+			var compositeContex = new CompositeContex();
+			
+			compositeContex.Add(new Contex<long>
 			{
 				ContextProvider = new TimeContextProvider { SelectedTimeZone = TimeZoneInfo.Local },
 				Operator = new ContexLessThanOrEqual<long>(),
-				Value = 1534511400
-			};
+				GivenValue = 1534702530
+			});
+			
+			compositeContex.Add(new Contex<long>
+			{
+				ContextProvider = new TimeContextProvider { SelectedTimeZone = TimeZoneInfo.Local },
+				Operator = new ContexGreaterThan<long>(),
+				GivenValue = 1534702410
+			}, GlueLogicOperator.And, false);
 
-			while(contexTest.Check())
+			if (compositeContex.Evlaute())
 			{
 				Console.WriteLine(new TimeContextProvider { SelectedTimeZone = TimeZoneInfo.Local }.GetValue());
 			}
-
-			Console.WriteLine("Shit");
+			else
+			{
+				Console.WriteLine("Shit");
+			}
 
 			Console.ReadLine();
 		}

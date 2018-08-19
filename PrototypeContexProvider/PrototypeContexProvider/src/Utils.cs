@@ -12,5 +12,10 @@ namespace PrototypeContexProvider.src
 			var temp = (DateTime.Now - epoch).TotalSeconds;
 			return (long)temp;
 		}
+
+		public static bool Xor(bool a, bool b)
+		{
+			return ((!a) && b) || (a && (!b));
+		}
     }
 }

@@ -11,7 +11,7 @@ namespace PrototypeContexProvider.src
 		public long GetValue()
 		{
 			var fuckyou = TimeZoneInfo.ConvertTimeFromUtc(TimeZoneInfo.ConvertTimeToUtc(DateTime.Now), SelectedTimeZone);
-
+			var shithead = Utils.ToUnixTime(fuckyou);
 			return Utils.ToUnixTime(fuckyou);
 		}
 	}
