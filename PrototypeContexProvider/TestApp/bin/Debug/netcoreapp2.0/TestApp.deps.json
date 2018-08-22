@@ -1,17 +1,29 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "883f5ab0e357ef56d00e5851b3cee30b45ba651b"
+    "signature": "6c82403440a2eff6e825a7ab13fb0e149dbf8404"
   },
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.0": {
       "TestApp/1.0.0": {
         "dependencies": {
+          "Easyforce.GuigleAPI": "1.0.6",
           "PrototypeContexProvider": "1.0.0"
         },
         "runtime": {
           "TestApp.dll": {}
+        }
+      },
+      "Easyforce.GuigleAPI/1.0.6": {
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.2"
+        },
+        "runtime": {
+          "lib/GuigleAPI.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "Newtonsoft.Json/11.0.2": {
@@ -24,6 +36,7 @@
       },
       "PrototypeContexProvider/1.0.0": {
         "dependencies": {
+          "Easyforce.GuigleAPI": "1.0.6",
           "Newtonsoft.Json": "11.0.2"
         },
         "runtime": {
@@ -37,6 +50,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Easyforce.GuigleAPI/1.0.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Kjf3PmUu0SJrBjvjZrNjZA3FPGL3cDWn5GF7GvWIESpstir1K0wsQhYCnpqMmM7mrgP8rRUqg1a5VC9qbZ3wfg==",
+      "path": "easyforce.guigleapi/1.0.6",
+      "hashPath": "easyforce.guigleapi.1.0.6.nupkg.sha512"
     },
     "Newtonsoft.Json/11.0.2": {
       "type": "package",

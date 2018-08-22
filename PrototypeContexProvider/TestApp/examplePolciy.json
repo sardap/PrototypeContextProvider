@@ -1,0 +1,23 @@
+﻿{
+  "dataSharingPolicy": {
+    "id": "POOP",
+    "author": "paul",
+    "prority": 1,
+    "decision": "permit",
+    "dataConsumer": {
+      "name": "email",
+      "value": "coolguy@coolguy.zone"
+    },
+    "compositeContex": [
+      {
+        "name": "",
+        "cOperator": "GTE",
+        "provider": {
+          "type": "DateTimeProvider",
+          "timeZone": "AEST"
+        },
+        "value": 1534702410
+      }
+    ]
+  }
+}

@@ -4,11 +4,19 @@ using System.Text;
 
 namespace PrototypeContexProvider.src
 {
-    public class ContexGreaterThanOrEqual<T> : IContexOperator<T>
+    public class ContexGreaterThanOrEqual : IContexOperator
     {
-		public bool Resolve(T a, T b)
+		public string Type
 		{
-			return new ContexGreaterThan<T>().Resolve(a, b) || new ContexEqual<T>().Resolve(a, b);
+			get
+			{
+				return "GOE";
+			}
+		}
+
+		public bool Resolve(dynamic a, dynamic b)
+		{
+			return new ContexGreaterThan().Resolve(a, b) || new ContexEqual().Resolve(a, b);
 		}
 	}	
 }

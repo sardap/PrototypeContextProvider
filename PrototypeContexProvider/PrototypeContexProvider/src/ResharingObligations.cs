@@ -4,10 +4,10 @@ using System.Text;
 
 namespace PrototypeContexProvider.src
 {
-    public interface IContexOperator
+    public class ResharingObligations
     {
-		string Type { get; }
-
-		bool Resolve(dynamic a, dynamic b);
+		public bool CanShare;
+		public int Cardinality;
+		public int Recurring;
 	}
 }

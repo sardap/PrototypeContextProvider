@@ -4,33 +4,37 @@ using System.Text;
 
 namespace PrototypeContexProvider.src
 {
-    public class CompositeContex
-    {
-		private class Entry
+	public class CompositeContex
+	{
+		public class Entry
 		{
 			public object Contex;
-			public Type ContexType;
 			public GlueLogicOperator Glue;
 			public bool Not;
 		}
 
-		List<Entry> _contexies = new List<Entry>();
+		public List<Entry> Contexies { get; set; }
+
+		public CompositeContex()
+		{
+			Contexies = new List<Entry>();
+		}
 
 		public void Add<T>(Contex<T> contex, GlueLogicOperator glueLogicOperator = GlueLogicOperator.And, bool not = false)
 		{
-			if(_contexies.Count == 0)
+			if(Contexies.Count == 0)
 			{
 				glueLogicOperator = GlueLogicOperator.And;
 			}
 
-			_contexies.Add(CreateEntry(contex, glueLogicOperator, not));
+			Contexies.Add(CreateEntry(contex, glueLogicOperator, not));
 		}
 
 		public bool Evlaute()
 		{
 			bool result = true;
 
-			foreach(Entry entry in _contexies)
+			foreach(Entry entry in Contexies)
 			{
 				dynamic daContex = entry.Contex;
 

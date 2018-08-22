@@ -6,11 +6,15 @@ namespace PrototypeContexProvider.src
 {
 	public class Contex<T>
 	{
-		private string _name;
+		public string Name { get; set; }
+
+		public long Interval { get; set; }
 
 		public IContextProvider<T> ContextProvider { get; set; }
+
 		public T GivenValue { get; set; }
-		public IContexOperator<T> Operator { get; set; }
+
+		public IContexOperator Operator { get; set; }
 
 		public Contex()
 		{

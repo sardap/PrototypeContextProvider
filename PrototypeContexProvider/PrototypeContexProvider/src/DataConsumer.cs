@@ -4,10 +4,9 @@ using System.Text;
 
 namespace PrototypeContexProvider.src
 {
-    public interface IContexOperator
+    public class DataConsumer
     {
-		string Type { get; }
-
-		bool Resolve(dynamic a, dynamic b);
-	}
+		public string Name;
+		public string Value;
+    }
 }

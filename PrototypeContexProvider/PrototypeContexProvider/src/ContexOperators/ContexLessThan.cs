@@ -4,13 +4,19 @@ using System.Text;
 
 namespace PrototypeContexProvider.src
 {
-    public class ContexLessThan<T> : IContexOperator<T>
+    public class ContexLessThan : IContexOperator
     {
-		public bool Resolve(T a, T b)
+		public string Type
 		{
-			dynamic da = a;
-			dynamic db = b;
-			return da < db;
+			get
+			{
+				return "L";
+			}
+		}
+
+		public bool Resolve(dynamic a, dynamic b)
+		{
+			return a < b;
 		}
 	}
 }

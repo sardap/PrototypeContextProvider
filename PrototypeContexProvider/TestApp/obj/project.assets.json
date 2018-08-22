@@ -2,6 +2,18 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.0": {
+      "Easyforce.GuigleAPI/1.0.6": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "10.0.2"
+        },
+        "compile": {
+          "lib/GuigleAPI.dll": {}
+        },
+        "runtime": {
+          "lib/GuigleAPI.dll": {}
+        }
+      },
       "Microsoft.NETCore.App/2.0.0": {
         "type": "package",
         "dependencies": {
@@ -210,6 +222,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.0",
         "dependencies": {
+          "Easyforce.GuigleAPI": "1.0.6",
           "Newtonsoft.Json": "11.0.2"
         },
         "compile": {
@@ -222,6 +235,16 @@
     }
   },
   "libraries": {
+    "Easyforce.GuigleAPI/1.0.6": {
+      "sha512": "Kjf3PmUu0SJrBjvjZrNjZA3FPGL3cDWn5GF7GvWIESpstir1K0wsQhYCnpqMmM7mrgP8rRUqg1a5VC9qbZ3wfg==",
+      "type": "package",
+      "path": "easyforce.guigleapi/1.0.6",
+      "files": [
+        "easyforce.guigleapi.1.0.6.nupkg.sha512",
+        "easyforce.guigleapi.nuspec",
+        "lib/GuigleAPI.dll"
+      ]
+    },
     "Microsoft.NETCore.App/2.0.0": {
       "sha512": "/mzXF+UtZef+VpzzN88EpvFq5U6z4rj54ZMq/J968H6pcvyLOmcupmTRpJ3CJm8ILoCGh9WI7qpDdiKtuzswrQ==",
       "type": "package",
@@ -715,6 +738,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
+      "Easyforce.GuigleAPI >= 1.0.6",
       "Microsoft.NETCore.App >= 2.0.0",
       "PrototypeContexProvider >= 1.0.0"
     ]
@@ -764,6 +788,10 @@
     "frameworks": {
       "netcoreapp2.0": {
         "dependencies": {
+          "Easyforce.GuigleAPI": {
+            "target": "Package",
+            "version": "[1.0.6, )"
+          },
           "Microsoft.NETCore.App": {
             "target": "Package",
             "version": "[2.0.0, )",
@@ -777,5 +805,17 @@
         "warn": true
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Easyforce.GuigleAPI 1.0.6' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Easyforce.GuigleAPI",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.0"
+      ]
+    }
+  ]
 }

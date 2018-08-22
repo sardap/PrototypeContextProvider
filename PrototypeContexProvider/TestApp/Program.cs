@@ -25,13 +25,24 @@ namespace TestApp
 			compositeContex.Add(new Contex<double>
 			{
 				ContextProvider = tempurtreContexProvider,
-				Operator = new ContexGreaterThan<double>(),
+				Operator = new ContexGreaterThan(),
 				GivenValue = 270
 			});
 
-			if (compositeContex.Evlaute())
+			var polciy = new DataSharingPolicy
 			{
-				Console.WriteLine(new TimeContextProvider { SelectedTimeZone = TimeZoneInfo.Local }.GetValue());
+				Author = "Paul",
+				CompositeContex = compositeContex,
+				DataConsumer = new DataConsumer()
+			};
+
+			await DataSharingPolicyParser.ExportToJson(polciy, "test.json");
+
+			var fuckoff = await DataSharingPolicyParser.ParseFromFileAsync("test.json");
+
+			if (fuckoff.CompositeContex.Evlaute())
+			{
+				Console.WriteLine(new DateTimeProvider { SelectedTimeZone = TimeZoneInfo.Local }.GetValue());
 			}
 			else
 			{

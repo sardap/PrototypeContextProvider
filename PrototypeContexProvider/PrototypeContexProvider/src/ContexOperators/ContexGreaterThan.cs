@@ -4,13 +4,19 @@ using System.Text;
 
 namespace PrototypeContexProvider.src
 {
-    public class ContexGreaterThan<T> : IContexOperator<T>
+    public class ContexGreaterThan : IContexOperator
 	{
-		public bool Resolve(T a, T b)
+		public string Type
 		{
-			dynamic da = a;
-			dynamic db = b;
-			return da > db;
+			get
+			{
+				return "G";
+			}
+		}
+
+		public bool Resolve(dynamic a, dynamic b)
+		{
+			return a > b;
 		}
     }
 }

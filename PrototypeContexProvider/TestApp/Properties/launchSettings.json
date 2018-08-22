@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TestApp": {
+      "commandName": "Project",
+      "workingDirectory": "C:\\Users\\pfsar\\OneDrive\\Documents\\GitHub\\PrototypeContextProvider\\PrototypeContexProvider\\TestApp"
+    }
+  }
+}

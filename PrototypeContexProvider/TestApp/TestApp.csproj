@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Easyforce.GuigleAPI" Version="1.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PrototypeContexProvider\PrototypeContexProvider.csproj" />
   </ItemGroup>
 

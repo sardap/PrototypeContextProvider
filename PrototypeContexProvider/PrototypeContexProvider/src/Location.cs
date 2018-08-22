@@ -4,10 +4,9 @@ using System.Text;
 
 namespace PrototypeContexProvider.src
 {
-    public interface IContexOperator
-    {
-		string Type { get; }
-
-		bool Resolve(dynamic a, dynamic b);
+	public class Location
+	{
+		public double Lat { get; set; }
+		public double Lon { get; set; }
 	}
 }
