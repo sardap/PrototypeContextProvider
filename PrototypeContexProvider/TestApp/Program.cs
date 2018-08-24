@@ -22,8 +22,6 @@ namespace TestApp
 				SelectedMessurement = TempurtreContexProvider.Messurement.Celius
 			};
 
-			tempurtreContexProvider.GetValue();
-
 			var compositeContex = new CompositeContex();
 
 			compositeContex.Add(new Contex
