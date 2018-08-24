@@ -4,11 +4,11 @@ using System.Text;
 
 namespace PrototypeContexProvider.src
 {
-    public class DateTimeProvider : IContextProvider<long>
+    public class DateTimeProvider : IContextProvider
     {
 		public TimeZoneInfo SelectedTimeZone { get; set; }
 
-		public long GetValue()
+		public dynamic GetValue()
 		{
 			return Utils.ToUnixTime(TimeZoneInfo.ConvertTimeFromUtc(TimeZoneInfo.ConvertTimeToUtc(DateTime.Now), SelectedTimeZone));
 		}

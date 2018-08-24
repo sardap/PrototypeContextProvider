@@ -6,8 +6,6 @@ namespace PrototypeContexProvider.src
 {
     public interface IContexOperator
     {
-		string Type { get; }
-
 		bool Resolve(dynamic a, dynamic b);
 	}
 }

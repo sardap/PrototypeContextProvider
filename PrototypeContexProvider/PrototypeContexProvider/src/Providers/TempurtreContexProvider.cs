@@ -9,18 +9,24 @@ using System.Threading.Tasks;
 namespace PrototypeContexProvider.src
 {
 	// api.openweathermap.org/data/2.5/forecast?id=524901&APPID=3e0b77a7c48d0ef47d2b3ddfdc2d9bc3 
-	public class TempurtreContexProvider : IContextProvider<double>
+	public class TempurtreContexProvider : IContextProvider
 	{
-		public string ApiKey { get; set; }
+		public enum Messurement
+		{
+			Kevlin, Celius
+		}
+
 		public string CityID { get; set; }
+
+		public Messurement SelectedMessurement { get; set; }
 
 		public TempurtreContexProvider()
 		{
 		}
 
-		public double GetValue()
+		public dynamic GetValue()
 		{
-			string url = "http://api.openweathermap.org/data/2.5/weather?id=" + CityID + "&APPID=" + ApiKey;
+			string url = "http://api.openweathermap.org/data/2.5/weather?id=" + CityID + "&APPID=" + APIKeyManger.GetInstance().GetApiKey("OpenWeather");
 
 			var request = WebRequest.Create(url);
 			request.Credentials = CredentialCache.DefaultCredentials;
@@ -34,7 +40,16 @@ namespace PrototypeContexProvider.src
 			response.Close();
 			reader.Close();
 
-			return temperatureData.main.temp;
+			double result = temperatureData.main.temp;
+
+			switch(SelectedMessurement)
+			{
+				case Messurement.Celius:
+					result -= 273.15;
+					break;
+			}
+
+			return result;
 		}
 
 	}

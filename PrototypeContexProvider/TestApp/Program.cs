@@ -7,29 +7,34 @@ namespace TestApp
 {
 	class Program
 	{
+		// ChildrenTokens
 		public static async Task<int> AsyncMain()
 		{
 			dynamic dAPIKeys = await Utils.ReadFromJson(
 				@"C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\APIKeys.json"
 			);
 
+			APIKeyManger.GetInstance().ReadIn(dAPIKeys);
+
 			var tempurtreContexProvider = new TempurtreContexProvider
 			{
 				CityID = "6952201",
-				ApiKey = dAPIKeys.OpenWeather
+				SelectedMessurement = TempurtreContexProvider.Messurement.Celius
 			};
+
 			tempurtreContexProvider.GetValue();
 
 			var compositeContex = new CompositeContex();
 
-			compositeContex.Add(new Contex<double>
+			compositeContex.Add(new Contex
 			{
+				Name = "TempTest",
 				ContextProvider = tempurtreContexProvider,
 				Operator = new ContexGreaterThan(),
-				GivenValue = 270
+				GivenValue = 15
 			});
 
-			var polciy = new DataSharingPolicy
+			var polciy = new DataSharingPolciy
 			{
 				Author = "Paul",
 				CompositeContex = compositeContex,
@@ -38,9 +43,9 @@ namespace TestApp
 
 			await DataSharingPolicyParser.ExportToJson(polciy, "test.json");
 
-			var fuckoff = await DataSharingPolicyParser.ParseFromFileAsync("test.json");
+			var recoveredPolicy = await DataSharingPolicyParser.ParseFromFileAsync("test.json");
 
-			if (fuckoff.CompositeContex.Evlaute())
+			if (recoveredPolicy.CompositeContex.Evlaute())
 			{
 				Console.WriteLine(new DateTimeProvider { SelectedTimeZone = TimeZoneInfo.Local }.GetValue());
 			}

@@ -6,21 +6,21 @@ namespace PrototypeContexProvider.src
 {
 	public class CompositeContex
 	{
-		public class Entry
+		private class Entry
 		{
-			public object Contex;
+			public Contex Contex;
 			public GlueLogicOperator Glue;
 			public bool Not;
 		}
 
-		public List<Entry> Contexies { get; set; }
+		private List<Entry> Contexies { get; set; }
 
 		public CompositeContex()
 		{
 			Contexies = new List<Entry>();
 		}
 
-		public void Add<T>(Contex<T> contex, GlueLogicOperator glueLogicOperator = GlueLogicOperator.And, bool not = false)
+		public void Add(Contex contex, GlueLogicOperator glueLogicOperator = GlueLogicOperator.And, bool not = false)
 		{
 			if(Contexies.Count == 0)
 			{
@@ -58,7 +58,27 @@ namespace PrototypeContexProvider.src
 			return result;
 		}
 
-		private Entry CreateEntry<T>(Contex<T> contex, GlueLogicOperator glueLogicOperator, bool not)
+		public CompositeContexJson GenreateJsonVersion()
+		{
+			var result = new CompositeContexJson();
+
+			foreach(var entry in Contexies)
+			{
+				result.Conteiexs.Add
+				(
+					new CompositeContexJson.Entry
+					{
+						Contex = entry.Contex,
+						Glue = entry.Glue,
+						Not = entry.Not
+					}
+				);
+			}
+
+			return result;
+		}
+
+		private Entry CreateEntry(Contex contex, GlueLogicOperator glueLogicOperator, bool not)
 		{
 			return new Entry { Contex = contex, Glue = glueLogicOperator, Not = not };
 		}

@@ -7,10 +7,13 @@
 
   <ItemGroup>
     <PackageReference Include="Easyforce.GuigleAPI" Version="1.0.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PrototypeContexProvider\PrototypeContexProvider.csproj" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties test_1json__JSONSchema="json" /></VisualStudio></ProjectExtensions>
 
 </Project>

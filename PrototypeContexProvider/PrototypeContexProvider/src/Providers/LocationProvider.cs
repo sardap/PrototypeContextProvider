@@ -1,18 +1,17 @@
 ﻿using GuigleAPI;
+using Newtonsoft.Json;
 using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PrototypeContexProvider.src
 {
-	public class LocationProvider : IContextProvider<Location>
+	public class LocationProvider : IContextProvider
 	{
-		public string ApiKey { get; set; }
-
-		public Location GetValue()
+		public dynamic GetValue()
 		{
-			GoogleGeocodingAPI.GoogleAPIKey = ApiKey;
+			GoogleGeocodingAPI.GoogleAPIKey = APIKeyManger.GetInstance().GetApiKey("GoogleLocation");
 			var task = Task.Run(async () => await GoogleGeocodingAPI.GetCoordinatesFromAddressAsync("100 Market St, Southbank"));
 			task.Wait();
 			var asyncFunctionResult = task.Result;

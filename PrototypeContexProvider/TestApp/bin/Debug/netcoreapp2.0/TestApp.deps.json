@@ -9,6 +9,7 @@
       "TestApp/1.0.0": {
         "dependencies": {
           "Easyforce.GuigleAPI": "1.0.6",
+          "Newtonsoft.Json": "11.0.2",
           "PrototypeContexProvider": "1.0.0"
         },
         "runtime": {

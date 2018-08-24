@@ -9,3 +9,6 @@ C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeConte
 C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\UnitTest\obj\Debug\netcoreapp2.0\UnitTest.csproj.CoreCompileInputs.cache
 C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\UnitTest\obj\Debug\netcoreapp2.0\UnitTest.AssemblyInfoInputs.cache
 C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\UnitTest\obj\Debug\netcoreapp2.0\UnitTest.AssemblyInfo.cs
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\UnitTest\bin\Debug\netcoreapp2.0\UnitTest.pdb
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\UnitTest\obj\Debug\netcoreapp2.0\UnitTest.dll
+C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\UnitTest\obj\Debug\netcoreapp2.0\UnitTest.pdb

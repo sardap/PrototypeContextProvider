@@ -9,15 +9,24 @@ namespace PrototypeContexProvider.src
 {
     public static class DataSharingPolicyParser
     {
-		public static async Task ExportToJson(DataSharingPolicy dataSharingPolicy, string fileName)
+		public static async Task ExportToJson(DataSharingPolciy dataSharingPolicy, string fileName)
 		{
 			using (StreamWriter r = new StreamWriter(fileName))
 			{
-				await r.WriteAsync(JsonConvert.SerializeObject(dataSharingPolicy));
+				dataSharingPolicy.JsonCompositeContex = dataSharingPolicy.CompositeContex.GenreateJsonVersion();
+
+				var settings = new JsonSerializerSettings
+				{
+					TypeNameHandling = TypeNameHandling.Auto
+				};
+
+				string jsonString = JsonConvert.SerializeObject(dataSharingPolicy, typeof(DataSharingPolciy), settings);
+
+				await r.WriteAsync(jsonString);
 			}
 		}
 
-		public static async Task<DataSharingPolicy> ParseFromFileAsync(string fileName)
+		public static async Task<DataSharingPolciy> ParseFromFileAsync(string fileName)
 		{
 			using (StreamReader r = new StreamReader(fileName))
 			{
@@ -26,15 +35,15 @@ namespace PrototypeContexProvider.src
 			}
 		}
 
-		public static DataSharingPolicy ParseString(string json)
+		public static DataSharingPolciy ParseString(string json)
 		{
-			var dataSharingPolicy = JsonConvert.DeserializeObject<DataSharingPolicy>(json);
+			var dataSharingPolicy = JsonConvert.DeserializeObject<DataSharingPolciy>(json, new JsonSerializerSettings
+			{ 
+				TypeNameHandling = TypeNameHandling.Auto,
+			});
 
-			foreach (dynamic contex in dataSharingPolicy.CompositeContex.Contexies)
-			{
 
-			}
-
+			dataSharingPolicy.CompositeContex = dataSharingPolicy.JsonCompositeContex.ToCompositeContex();
 
 			return dataSharingPolicy;
 			/*

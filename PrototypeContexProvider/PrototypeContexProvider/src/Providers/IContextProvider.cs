@@ -2,8 +2,8 @@
 
 namespace PrototypeContexProvider
 {
-    public interface IContextProvider<T>
+    public interface IContextProvider
     {
-		T GetValue();
+		dynamic GetValue();
     }
 }

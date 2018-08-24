@@ -740,6 +740,7 @@
     ".NETCoreApp,Version=v2.0": [
       "Easyforce.GuigleAPI >= 1.0.6",
       "Microsoft.NETCore.App >= 2.0.0",
+      "Newtonsoft.Json >= 11.0.2",
       "PrototypeContexProvider >= 1.0.0"
     ]
   },
@@ -796,6 +797,10 @@
             "target": "Package",
             "version": "[2.0.0, )",
             "autoReferenced": true
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[11.0.2, )"
           }
         },
         "imports": [
