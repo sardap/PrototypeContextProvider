@@ -30,5 +30,14 @@ namespace PrototypeContexProvider.src
 			}
 		}
 
+		// Stolen https://stackoverflow.com/questions/6651554/random-number-in-long-range-is-this-the-way
+		public static long LongRandom(Random random, long min = long.MinValue, long max = long.MaxValue)
+		{
+			byte[] buf = new byte[8];
+			random.NextBytes(buf);
+			long longRand = BitConverter.ToInt64(buf, 0);
+
+			return (Math.Abs(longRand % (max - min)) + min);
+		}
 	}
 }

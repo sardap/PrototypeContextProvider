@@ -7,6 +7,8 @@ namespace TestApp
 {
 	class Program
 	{
+		private static Random rnd = new Random();
+
 		// ChildrenTokens
 		public static async Task<int> AsyncMain()
 		{
@@ -34,9 +36,30 @@ namespace TestApp
 
 			var polciy = new DataSharingPolciy
 			{
+				Id = Utils.LongRandom(rnd),
 				Author = "Paul",
+				Proity = 0,
+				Decision = "test",
+				DataConsumer = new DataConsumer
+				{
+					Name = "NotPaul",
+					Value = "Paul"
+				},
 				CompositeContex = compositeContex,
-				DataConsumer = new DataConsumer()
+				PrivacyOblgations = new PrivacyOblgations
+				{
+					Purpose = "Testing",
+					Granularity = "Garbage",
+					Anonymisation = "Garbage",
+					Notifaction = "Garbage",
+					Accounting = "Garbage"
+				},
+				ResharingObligations = new ResharingObligations
+				{
+					CanShare = false,
+					Cardinality = 10,
+					Recurring = 10
+				}
 			};
 
 			await DataSharingPolicyParser.ExportToJson(polciy, "test.json");

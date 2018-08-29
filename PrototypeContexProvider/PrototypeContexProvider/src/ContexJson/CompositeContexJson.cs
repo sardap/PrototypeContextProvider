@@ -1,17 +1,22 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace PrototypeContexProvider.src
 {
 	public class CompositeContexJson
 	{
+		[Key]
+		public long Id { get; set; }
+
 		public class Entry
 		{
-			public Contex Contex;
-			public GlueLogicOperator Glue;
-			public bool Not;
+			public long Id { get; set; }
+			public Contex Contex { get; set; }
+			public GlueLogicOperator Glue { get; set; }
+			public bool Not { get; set; }
 		}
 
 		public List<Entry> Conteiexs { get; set; }

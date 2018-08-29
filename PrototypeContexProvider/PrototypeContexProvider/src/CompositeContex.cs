@@ -6,6 +6,8 @@ namespace PrototypeContexProvider.src
 {
 	public class CompositeContex
 	{
+		public long Id { get; set; }
+
 		private class Entry
 		{
 			public Contex Contex;

@@ -1,21 +1,23 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace PrototypeContexProvider.src
 {
 	public class DataSharingPolciy
 	{
-		public string ID;
-		public string Author;
-		public int Proity;
-		public string Decision;
-		public DataConsumer DataConsumer;
+		[Key]
+		public long Id { get; set; }
+		public string Author { get; set; }
+		public int Proity { get; set; }
+		public string Decision { get; set; } 
+		public DataConsumer DataConsumer { get; set; }
 		[JsonIgnore]
-		public CompositeContex CompositeContex;
-		public CompositeContexJson JsonCompositeContex;
-		public PrivacyOblgations PrivacyOblgations;
-		public ResharingObligations ResharingObligations;
+		public CompositeContex CompositeContex { get; set; }
+		public CompositeContexJson JsonCompositeContex { get; set; }
+		public PrivacyOblgations PrivacyOblgations { get; set; }
+		public ResharingObligations ResharingObligations { get; set; }
 	}
 }
