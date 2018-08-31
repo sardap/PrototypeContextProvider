@@ -11,9 +11,8 @@ namespace RestServer.Models
 	{
 		public DbSet<DataSharingPolciy> Polcies { get; set; }
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		public DataSharingPolciyContext(DbContextOptions<DataSharingPolciyContext> options) : base(options)
 		{
-			optionsBuilder.UseSqlite("Filename=./Polcies.db");
 		}
 	}
 }

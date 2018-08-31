@@ -9,9 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp", "TestApp\TestApp.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTest.csproj", "{D211841B-1F06-4F35-A919-99B7F927DBFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleResouce", "WebServer\ExampleResouce.csproj", "{1957762C-4FE6-4131-9113-55C28AB129F3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestServer", "RestServer\RestServer.csproj", "{263A8436-FA01-44ED-ADCD-F339D65DE54D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestServer", "RestServer\RestServer.csproj", "{263A8436-FA01-44ED-ADCD-F339D65DE54D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +29,6 @@ Global
 		{D211841B-1F06-4F35-A919-99B7F927DBFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D211841B-1F06-4F35-A919-99B7F927DBFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D211841B-1F06-4F35-A919-99B7F927DBFC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1957762C-4FE6-4131-9113-55C28AB129F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1957762C-4FE6-4131-9113-55C28AB129F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1957762C-4FE6-4131-9113-55C28AB129F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1957762C-4FE6-4131-9113-55C28AB129F3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{263A8436-FA01-44ED-ADCD-F339D65DE54D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{263A8436-FA01-44ED-ADCD-F339D65DE54D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{263A8436-FA01-44ED-ADCD-F339D65DE54D}.Release|Any CPU.ActiveCfg = Release|Any CPU

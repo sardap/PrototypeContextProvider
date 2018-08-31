@@ -21,37 +21,22 @@ namespace RestServer
 	public class Startup
 	{
 
-		public Startup(IHostingEnvironment env)
-		{
-			var builder = new ConfigurationBuilder()
-				.SetBasePath(env.ContentRootPath)
-				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-				.AddEnvironmentVariables();
-
-			Configuration = builder.Build();
-
-			ValuesController.LoadDB();
-		}
-
-		public IConfigurationRoot Configuration { get; }
-
-		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+			services.AddDbContext<DataSharingPolciyContext>(opt =>
+				opt.UseInMemoryDatabase("TodoList"));
+			services.AddMvc()
+					.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			services.AddMvc().AddJsonOptions(options =>
 			{
 				options.SerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
 			});
+
+			ValuesController.LoadDB();
 		}
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+		public void Configure(IApplicationBuilder app)
 		{
-			app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials());
-			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-			loggerFactory.AddDebug();
 			app.UseMvc();
 		}
 	}
