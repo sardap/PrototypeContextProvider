@@ -339,3 +339,5 @@ ASALocalRun/
 
 PrototypeContexProvider/APIKeys.json
 PrototypeContexProvider/TestApp/test.json
+PrototypeContexProvider/RestServer/APIKeys.json
+PrototypeContexProvider/RestServer/PolciyResouceMap.json

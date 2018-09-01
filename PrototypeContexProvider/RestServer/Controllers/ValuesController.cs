@@ -39,10 +39,19 @@ namespace RestServer.Controllers
 			return _dataSharingPolciys.Values;			
 		}
 
-		[HttpGet("{id}", Name = "GetTodo")]
-		public ActionResult<int> GetById(long id)
+		[HttpGet("{policyID}/{apiKey}", Name = "GetTodo")]
+		public ActionResult<int> GetById(long policyID, string apiKey)
 		{
-			var item = _dataSharingPolciys[id];
+			//TODO Bad need to put resouce place
+			var resouceName = PolciyResouce.GetInstance().PolicyResouceMap.FirstOrDefault(i => i.Value == policyID).Key;
+
+			if (!APIKeyChecker.GetInstance().Check(apiKey, resouceName))
+				return NotFound();
+
+			var oldPolicyID = policyID;
+			policyID = PolciyResouce.GetInstance().PolicyResouceMap[resouceName];
+
+			var item = _dataSharingPolciys[policyID];
 			if (item == null)
 			{
 				return NotFound();

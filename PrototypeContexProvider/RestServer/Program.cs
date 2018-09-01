@@ -21,6 +21,9 @@ namespace RestServer
 			);
 
 			APIKeyManger.GetInstance().ReadIn(dAPIKeys);
+
+			PolciyResouce.GetInstance().LoadDB();
+			APIKeyChecker.GetInstance().LoadDB();
 		}
 
 		public static void Main(string[] args)
