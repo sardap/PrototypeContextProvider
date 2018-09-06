@@ -1,24 +1,23 @@
 <!DOCTYPE html>
+<script src="scripts/main.js"></script>
 <html>
     <head>
   
     <meta charset="utf-8" />
-    <title>PHP Application in Linux Subsystem for Windows</title>
+    <title>Demo</title>
     </head>
     <body>
-        <h1>PHP Application in Linux Subsystem for Windows<h1>
+        <h1>Stration<h1>
         <?php
-            //The URL that we want to GET.
-            $url = 'https://localhost:44320/api/values';
+            $ch = curl_init();
             
-            //Use file_get_contents to GET the URL in question.
-            $contents = file_get_contents($url);
-            
-            //If $contents is not a boolean FALSE value.
-            if($contents !== false){
-                //Print out the contents.
-                echo $contents;
-            }        
+            // Set query data here with the URL
+            curl_setopt($ch, CURLOPT_URL, 'https://localhost:44320/api/values'); 
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+            $content = trim(curl_exec($ch));
+            curl_close($ch);
+            print $content;
         ?>
     </body>
 </html>

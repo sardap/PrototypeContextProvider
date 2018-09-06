@@ -16,27 +16,42 @@ namespace RestServer.Controllers
 		private static Random _random = new Random();
 
 		//TODO Make this not bad 
-		private static Dictionary<long, DataSharingPolciy> _dataSharingPolciys = new Dictionary<long, DataSharingPolciy>();
+		private static HashSet<long> _dataSharingPolcies = new HashSet<long>();
 
-		public static void SaveDB()
+		public static void ExportToFile(long id, DataSharingPolciy polciy)
 		{
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-			DataSharingPolicyParser.ExportListToFile(_dataSharingPolciys.Values.ToList(), "Polciy");
+			DataSharingPolicyParser.ExportToJson(polciy, "policy" + id.ToString() + ".json");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 		}
 
 		public static void LoadDB()
 		{
-			var polcies = DataSharingPolicyParser.ParseListFromFileAsync("Polciy").GetAwaiter().GetResult();
+			foreach (string file in Directory.EnumerateFiles("polcies", "*", SearchOption.AllDirectories))
+			{
+				string fileName = file.Split(new string[] { "\\" }, StringSplitOptions.None)[1];
+				if (fileName.Contains("policy"))
+				{
+					string numString = fileName.Substring(6, ((fileName.Length - 1) - 10));
 
-			polcies.ForEach(i => _dataSharingPolciys.Add(i.Id, i));
+					_dataSharingPolcies.Add(long.Parse(numString));
+				}
+			}
+
+		}
+
+		private DataSharingPolciy LoadFromFile(long id)
+		{
+			return DataSharingPolicyParser.ParseFromFileAsync("polcies\\policy" + id.ToString() + ".json").GetAwaiter().GetResult();
 		}
 
 		// GET api/values
 		[HttpGet]
 		public ActionResult<IEnumerable<DataSharingPolciy>> Get()
-		{		
-			return _dataSharingPolciys.Values;			
+		{
+			var result = new List<DataSharingPolciy>();
+			_dataSharingPolcies.ToList().ForEach(i => result.Add(LoadFromFile(i)));
+			return result;			
 		}
 
 		[HttpGet("{policyID}/{apiKey}", Name = "GetTodo")]
@@ -51,7 +66,7 @@ namespace RestServer.Controllers
 			var oldPolicyID = policyID;
 			policyID = PolciyResouce.GetInstance().PolicyResouceMap[resouceName];
 
-			var item = _dataSharingPolciys[policyID];
+			var item = LoadFromFile(policyID);
 			if (item == null)
 			{
 				return NotFound();
@@ -64,12 +79,13 @@ namespace RestServer.Controllers
 		{
 			if(item.Id == 0)
 			{
+				//TODO make this not shit
 				item.Id = Utils.LongRandom(_random);
 			}
 
 			item.CompositeContex = item.JsonCompositeContex.ToCompositeContex();
-			_dataSharingPolciys.Add(item.Id, item);
-			SaveDB();
+			ExportToFile(item.Id, item);
+			_dataSharingPolcies.Add(item.Id);
 		}
 
 		// PUT api/values/5
