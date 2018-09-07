@@ -7,7 +7,7 @@ using System.Text;
 
 namespace PrototypeContexProvider.src
 {
-	public class Contex
+	public class Contex : IContex
 	{
 		[Key]
 		public long Id { get; set; }

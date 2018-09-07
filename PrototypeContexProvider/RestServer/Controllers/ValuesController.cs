@@ -68,7 +68,7 @@ namespace RestServer.Controllers
 				return NotFound();
 			}
 
-			return item.CompositeContex.Evlaute() ? 1 : 0;
+			return item.CompositeContex.Check() ? 1 : 0;
 		}
 
 		[HttpPost("{apiKey}/{resouceID}")]

@@ -4,25 +4,27 @@ using System.Text;
 
 namespace PrototypeContexProvider.src
 {
-	public class CompositeContex
+	public class CompositeContex  : IContex
 	{
 		public long Id { get; set; }
 
 		private class Entry
 		{
-			public Contex Contex;
+			public IContex Contex;
 			public GlueLogicOperator Glue;
 			public bool Not;
 		}
 
 		private List<Entry> Contexies { get; set; }
 
+		public IContexOperator Operator { get; set; }
+
 		public CompositeContex()
 		{
 			Contexies = new List<Entry>();
 		}
 
-		public void Add(Contex contex, GlueLogicOperator glueLogicOperator = GlueLogicOperator.And, bool not = false)
+		public void Add(IContex contex, GlueLogicOperator glueLogicOperator = GlueLogicOperator.And, bool not = false)
 		{
 			if(Contexies.Count == 0)
 			{
@@ -32,7 +34,7 @@ namespace PrototypeContexProvider.src
 			Contexies.Add(CreateEntry(contex, glueLogicOperator, not));
 		}
 
-		public bool Evlaute()
+		public bool Check()
 		{
 			bool result = true;
 
@@ -80,7 +82,7 @@ namespace PrototypeContexProvider.src
 			return result;
 		}
 
-		private Entry CreateEntry(Contex contex, GlueLogicOperator glueLogicOperator, bool not)
+		private Entry CreateEntry(IContex contex, GlueLogicOperator glueLogicOperator, bool not)
 		{
 			return new Entry { Contex = contex, Glue = glueLogicOperator, Not = not };
 		}

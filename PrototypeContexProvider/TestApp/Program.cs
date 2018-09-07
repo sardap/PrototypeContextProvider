@@ -34,6 +34,21 @@ namespace TestApp
 				GivenValue = 15
 			});
 
+			var nestedComContex = new CompositeContex();
+			nestedComContex.Add(new Contex
+			{
+				Name = "NestedContex",
+				ContextProvider = new TempurtreContexProvider
+				{
+					CityID = "10",
+					SelectedMessurement = TempurtreContexProvider.Messurement.Celius
+				},
+				Operator = new ContexGreaterThan(),
+				GivenValue = 20
+			});
+
+			compositeContex.Add(nestedComContex);
+
 			var polciy = new DataSharingPolciy
 			{
 				Id = Utils.LongRandom(rnd),
@@ -66,7 +81,7 @@ namespace TestApp
 
 			var recoveredPolicy = await DataSharingPolicyParser.ParseFromFileAsync("test.json");
 
-			if (recoveredPolicy.CompositeContex.Evlaute())
+			if (recoveredPolicy.CompositeContex.Check())
 			{
 				Console.WriteLine(new DateTimeProvider { SelectedTimeZone = TimeZoneInfo.Local }.GetValue());
 			}
