@@ -29,12 +29,12 @@ namespace PrototypeContexProvider.src
 			{
 				await r.WriteAsync(ExportListToJsonStrings(dataSharingPolciys));
 			}
-
 		}
 
 		public static string ExportToJsonString(DataSharingPolciy dataSharingPolciy)
 		{
-			dataSharingPolciy.JsonCompositeContex = dataSharingPolciy.CompositeContex.GenreateJsonVersion();
+			if(dataSharingPolciy.JsonCompositeContex == null)
+				dataSharingPolciy.JsonCompositeContex = dataSharingPolciy.CompositeContex.GenreateJsonVersion();
 
 			string jsonString = JsonConvert.SerializeObject(dataSharingPolciy, typeof(DataSharingPolciy), _settings);
 

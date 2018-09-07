@@ -18,10 +18,10 @@ namespace RestServer.Controllers
 		//TODO Make this not bad 
 		private static HashSet<long> _dataSharingPolcies = new HashSet<long>();
 
-		public static void ExportToFile(long id, DataSharingPolciy polciy)
+		public static async Task ExportToFile(long id, DataSharingPolciy polciy)
 		{
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-			DataSharingPolicyParser.ExportToJson(polciy, "policy" + id.ToString() + ".json");
+			DataSharingPolicyParser.ExportToJson(polciy, "polcies\\policy" + id.ToString() + ".json");
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 		}
 
@@ -42,50 +42,54 @@ namespace RestServer.Controllers
 
 		private DataSharingPolciy LoadFromFile(long id)
 		{
-			return DataSharingPolicyParser.ParseFromFileAsync("polcies\\policy" + id.ToString() + ".json").GetAwaiter().GetResult();
+			var filePath = "polcies\\policy" + id.ToString() + ".json";
+			return DataSharingPolicyParser.ParseFromFileAsync(filePath).GetAwaiter().GetResult();
 		}
 
 		// GET api/values
 		[HttpGet]
-		public ActionResult<IEnumerable<DataSharingPolciy>> Get()
+		public ActionResult<string> Get()
 		{
-			var result = new List<DataSharingPolciy>();
-			_dataSharingPolcies.ToList().ForEach(i => result.Add(LoadFromFile(i)));
-			return result;			
+			return PolciyResouce.GetInstance().GenrateAndAddAPIKey();
 		}
 
-		[HttpGet("{policyID}/{apiKey}", Name = "GetTodo")]
-		public ActionResult<int> GetById(long policyID, string apiKey)
+		[HttpGet("{apiKey}/{resouceID}", Name = "GetTodo")]
+		public ActionResult<int> GetById(string apiKey, long resouceID)
 		{
-			//TODO Bad need to put resouce place
-			var resouceName = PolciyResouce.GetInstance().PolicyResouceMap.FirstOrDefault(i => i.Value == policyID).Key;
+			var pr = PolciyResouce.GetInstance();
+			var apiKeyEntry = pr.OwnershipTable[apiKey];
 
-			if (!APIKeyChecker.GetInstance().Check(apiKey, resouceName))
+			if (!apiKeyEntry.PolciesResocuce.ContainsKey(resouceID))
 				return NotFound();
 
-			var oldPolicyID = policyID;
-			policyID = PolciyResouce.GetInstance().PolicyResouceMap[resouceName];
-
-			var item = LoadFromFile(policyID);
+			var item = LoadFromFile(apiKeyEntry.PolciesResocuce[resouceID]);
 			if (item == null)
 			{
 				return NotFound();
 			}
+
 			return item.CompositeContex.Evlaute() ? 1 : 0;
 		}
 
-		[HttpPost]
-		public void Create(DataSharingPolciy item)
+		[HttpPost("{apiKey}/{resouceID}")]
+		public void Create(string apiKey, long resouceID, DataSharingPolciy polciy)
 		{
-			if(item.Id == 0)
+			if(polciy.Id == 0)
 			{
 				//TODO make this not shit
-				item.Id = Utils.LongRandom(_random);
+				polciy.Id = Utils.LongRandom(_random);
 			}
 
-			item.CompositeContex = item.JsonCompositeContex.ToCompositeContex();
-			ExportToFile(item.Id, item);
-			_dataSharingPolcies.Add(item.Id);
+			var polciyResouce = PolciyResouce.GetInstance();
+
+			if (polciyResouce.OwnershipTable.ContainsKey(apiKey))
+			{
+				polciyResouce.OwnershipTable[apiKey].PolciesResocuce.Add(resouceID, polciy.Id);
+				_dataSharingPolcies.Add(polciy.Id);
+				ExportToFile(polciy.Id, polciy);
+				polciyResouce.SaveDB();
+			}
+
 		}
 
 		// PUT api/values/5

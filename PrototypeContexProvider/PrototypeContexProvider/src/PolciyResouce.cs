@@ -5,19 +5,31 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RestServer
+namespace PrototypeContexProvider.src
 {
 	public class PolciyResouce
 	{
+		public const int KEY_BYTES = 86;
+
+		public class Entry
+		{
+			public Dictionary<long, long> PolciesResocuce { get; set; }
+
+			public Entry()
+			{
+				PolciesResocuce = new Dictionary<long, long>();
+			}
+		}
+
 		private static PolciyResouce _singleton;
 
-		public Dictionary<string, long> PolicyResouceMap { get; set; }
+		public Dictionary<string, Entry> OwnershipTable { get; set; }
 
 		public string FileName { get; set; }
 
 		private PolciyResouce()
 		{
-			PolicyResouceMap = new Dictionary<string, long>();
+			OwnershipTable = new Dictionary<string, Entry>();
 			FileName = "PolciyResouceMap.json";
 		}
 
@@ -29,11 +41,20 @@ namespace RestServer
 			return _singleton;
 		}
 
-		public void SaveDB()
+		public string GenrateAndAddAPIKey()
+		{
+			var keyCreator = new KeyCreator();
+			var newKey = keyCreator.CreateKey(KEY_BYTES);
+			OwnershipTable.Add(newKey, new Entry());
+			SaveDB();
+			return newKey;
+		}
+
+		public async Task SaveDB()
 		{
 			using (StreamWriter r = new StreamWriter(FileName))
 			{
-				r.Write(JsonConvert.SerializeObject(PolicyResouceMap));
+				await r.WriteAsync(JsonConvert.SerializeObject(OwnershipTable));
 			}
 		}
 
@@ -42,9 +63,11 @@ namespace RestServer
 			using (StreamReader r = new StreamReader(FileName))
 			{
 				string json = r.ReadToEnd();
-				PolicyResouceMap = JsonConvert.DeserializeObject<Dictionary<string, long>>(json);
-			}
+				OwnershipTable = JsonConvert.DeserializeObject<Dictionary<string, Entry>>(json);
 
+				if (OwnershipTable == null)
+					OwnershipTable = new Dictionary<string, Entry>();
+			}
 		}
 	}
 }
