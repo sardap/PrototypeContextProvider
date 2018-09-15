@@ -10,7 +10,7 @@ namespace PrototypeContexProvider.src
 
 		private class Entry
 		{
-			public IContex Contex;
+			public Contex Contex;
 			public GlueLogicOperator Glue;
 			public bool Not;
 		}
@@ -24,7 +24,7 @@ namespace PrototypeContexProvider.src
 			Contexies = new List<Entry>();
 		}
 
-		public void Add(IContex contex, GlueLogicOperator glueLogicOperator = GlueLogicOperator.And, bool not = false)
+		public void Add(Contex contex, GlueLogicOperator glueLogicOperator = GlueLogicOperator.And, bool not = false)
 		{
 			if(Contexies.Count == 0)
 			{
@@ -82,7 +82,7 @@ namespace PrototypeContexProvider.src
 			return result;
 		}
 
-		private Entry CreateEntry(IContex contex, GlueLogicOperator glueLogicOperator, bool not)
+		private Entry CreateEntry(Contex contex, GlueLogicOperator glueLogicOperator, bool not)
 		{
 			return new Entry { Contex = contex, Glue = glueLogicOperator, Not = not };
 		}

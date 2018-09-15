@@ -14,7 +14,7 @@ namespace PrototypeContexProvider.src
 		public class Entry
 		{
 			public long Id { get; set; }
-			public IContex Contex { get; set; }
+			public Contex Contex { get; set; }
 			public GlueLogicOperator Glue { get; set; }
 			public bool Not { get; set; }
 		}

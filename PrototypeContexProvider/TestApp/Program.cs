@@ -33,7 +33,7 @@ namespace TestApp
 				Operator = new ContexGreaterThan(),
 				GivenValue = 15
 			});
-
+			/*
 			var nestedComContex = new CompositeContex();
 			nestedComContex.Add(new Contex
 			{
@@ -48,7 +48,7 @@ namespace TestApp
 			});
 
 			compositeContex.Add(nestedComContex);
-
+			*/
 			var polciy = new DataSharingPolciy
 			{
 				Id = Utils.LongRandom(rnd),
