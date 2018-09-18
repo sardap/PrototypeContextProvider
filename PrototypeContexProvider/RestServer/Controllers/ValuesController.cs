@@ -17,6 +17,7 @@ namespace RestServer.Controllers
 
 		//TODO Make this not bad 
 		private static HashSet<long> _dataSharingPolcies = new HashSet<long>();
+		private static List<string> _tokens = new List<string>();
 
 		public static async Task ExportToFile(long id, DataSharingPolciy polciy)
 		{
@@ -53,8 +54,24 @@ namespace RestServer.Controllers
 			return PolciyResouce.GetInstance().GenrateAndAddAPIKey();
 		}
 
+
+		[HttpGet("checkTokken/{tokken}", Name = "CheckTokken")]
+		public ActionResult<int> CheckTokken(string tokken)
+		{
+			return _tokens.Contains(tokken) ? 1 : 0;
+		}
+
+		[HttpGet("GetTokken", Name = "GetTokken")]
+		public ActionResult<string> GetTokken()
+		{
+			var newTokken = Utils.RandomString(5, _random);
+			_tokens.Add(newTokken);
+			return newTokken;
+		}
+
+
 		[HttpGet("{apiKey}/{resouceID}", Name = "GetTodo")]
-		public ActionResult<int> GetById(string apiKey, long resouceID)
+		public ActionResult<int> GetById(string apiKey, string resouceID)
 		{
 			var pr = PolciyResouce.GetInstance();
 			var apiKeyEntry = pr.OwnershipTable[apiKey];
@@ -71,8 +88,31 @@ namespace RestServer.Controllers
 			return item.CompositeContex.Check() ? 1 : 0;
 		}
 
+		[HttpGet("{apiKey}/{resouceID}/{ident}", Name = "GetResultWithName")]
+		public ActionResult<int> GetById(string apiKey, string resouceID, string ident)
+		{
+			var pr = PolciyResouce.GetInstance();
+			var apiKeyEntry = pr.OwnershipTable[apiKey];
+
+			if (!apiKeyEntry.PolciesResocuce.ContainsKey(resouceID))
+				return NotFound();
+
+			var item = LoadFromFile(apiKeyEntry.PolciesResocuce[resouceID]);
+			if (item == null)
+			{
+				return NotFound();
+			}
+
+			if(item.DataConsumer.Value.ToLower() != ident.ToLower())
+			{
+				return 0;
+			}
+
+			return item.CompositeContex.Check() ? 1 : 0;
+		}
+
 		[HttpPost("{apiKey}/{resouceID}")]
-		public void Create(string apiKey, long resouceID, DataSharingPolciy polciy)
+		public ActionResult<int> Create(string apiKey, string resouceID, DataSharingPolciy polciy)
 		{
 			if(polciy.Id == 0)
 			{
@@ -88,8 +128,10 @@ namespace RestServer.Controllers
 				_dataSharingPolcies.Add(polciy.Id);
 				ExportToFile(polciy.Id, polciy);
 				polciyResouce.SaveDB();
+				return 1;
 			}
 
+			return 0;
 		}
 
 		// PUT api/values/5
