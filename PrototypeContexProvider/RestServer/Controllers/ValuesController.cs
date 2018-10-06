@@ -13,11 +13,18 @@ namespace RestServer.Controllers
 	[ApiController]
 	public class ValuesController : ControllerBase
 	{
+		private class TokenEntry
+		{
+			public string ResID { get; set; }
+			public long PolicyID { get; set; }
+		}
+
 		private static Random _random = new Random();
 
 		//TODO Make this not bad 
 		private static HashSet<long> _dataSharingPolcies = new HashSet<long>();
-		private static List<string> _tokens = new List<string>();
+		private static Dictionary<string, TokenEntry> _tokens = new Dictionary<string, TokenEntry>();
+		private static Dictionary<string, string> _shareTokkens = new Dictionary<string, string>();
 
 		public static async Task ExportToFile(long id, DataSharingPolciy polciy)
 		{
@@ -54,18 +61,45 @@ namespace RestServer.Controllers
 			return PolciyResouce.GetInstance().GenrateAndAddAPIKey();
 		}
 
-
-		[HttpGet("checkTokken/{tokken}", Name = "CheckTokken")]
-		public ActionResult<int> CheckTokken(string tokken)
+		[HttpGet("shareTokken/{tokken}/{resouceID}", Name = "CheckTokken")]
+		public ActionResult<bool> CheckShareTokken(string tokken, string resouceID)
 		{
-			return _tokens.Contains(tokken) ? 1 : 0;
+			return _shareTokkens[tokken] == resouceID;
 		}
 
-		[HttpGet("GetTokken", Name = "GetTokken")]
-		public ActionResult<string> GetTokken()
+		[HttpGet("shareTokken/{apiKey}/{resouceID}/{policyID}", Name = "GetTokken")]
+		public ActionResult<string> CreateShareTokken(string apiKey, string resouceID, long policyID)
 		{
-			var newTokken = Utils.RandomString(5, _random);
-			_tokens.Add(newTokken);
+			var pr = PolciyResouce.GetInstance();
+			var apiKeyEntry = pr.OwnershipTable[apiKey];
+
+			if (!apiKeyEntry.PolciesResocuce.ContainsKey(resouceID))
+				return NotFound();
+
+			var newTokken = Utils.CreateKey(10);
+			_shareTokkens[newTokken] = resouceID;
+			return newTokken;
+		}
+
+
+
+		[HttpGet("checkTokken/{tokken}/{resouceID}", Name = "CheckTokken")]
+		public ActionResult<int> CheckTokken(string tokken, string resouceID)
+		{
+			return _tokens[tokken].ResID == resouceID ? 1 : 0;
+		}
+
+		[HttpGet("GetTokken/{apiKey}/{resouceID}/{policyID}", Name = "GetTokken")]
+		public ActionResult<string> GetTokken(string apiKey, string resouceID, long policyID)
+		{
+			var pr = PolciyResouce.GetInstance();
+			var apiKeyEntry = pr.OwnershipTable[apiKey];
+
+			if (!apiKeyEntry.PolciesResocuce.ContainsKey(resouceID))
+				return NotFound();
+
+			var newTokken = Utils.CreateKey(10);
+			_tokens.Add(newTokken, new TokenEntry { ResID = resouceID, PolicyID = policyID });
 			return newTokken;
 		}
 
@@ -89,7 +123,7 @@ namespace RestServer.Controllers
 		}
 
 		[HttpGet("{apiKey}/{resouceID}/{ident}", Name = "GetResultWithName")]
-		public ActionResult<int> GetById(string apiKey, string resouceID, string ident)
+		public ActionResult<bool> GetById(string apiKey, string resouceID, string ident)
 		{
 			var pr = PolciyResouce.GetInstance();
 			var apiKeyEntry = pr.OwnershipTable[apiKey];
@@ -105,10 +139,10 @@ namespace RestServer.Controllers
 
 			if(item.DataConsumer.Value.ToLower() != ident.ToLower())
 			{
-				return 0;
+				return false;
 			}
 
-			return item.CompositeContex.Check() ? 1 : 0;
+			return item.CompositeContex.Check();
 		}
 
 		[HttpPost("{apiKey}/{resouceID}")]

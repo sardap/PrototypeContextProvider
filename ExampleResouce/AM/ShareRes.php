@@ -1,14 +1,18 @@
 <?php
     session_start();
 
-    require_once('ResFuncs.php');
-    require_once('policyFunc.php');
+    require_once('AMFuncs.php');
 
-    $resID = str_replace("/", "", $_SERVER['REQUEST_URI']);
-    $phpExtPos = strpos($resID, ".php");
-    $resID = substr($resID, 0, $phpExtPos);
-    $resID = str_replace(".php", "", $resID);
-    $resID = str_replace(".", "", $resID);
+    if (!isset($_GET['shareToken']))
+    {
+        echo 'Missing shareToken</br>'
+    }
+    if (!isset($_GET['resID']))
+    {
+        echo 'Missing resID</br>'
+    }
+
+    $shareToken = 
 
     $tokkenAuth = isset($_GET['auth']) && $tokkenAuth = CheckTokken('localhost:44320', $_GET['auth'], $resID);
     $apiKey = '9A38075E807090757AAA40FF9470B499D63A56E01BB92F680E3EE09A25DE9D994AFB4E2B940A8197107A5D33C9CC364A5147D79F39C76439E90B4A3A224890C97807849810386707836B23B8C99FF5389AA94659792D';
@@ -84,7 +88,7 @@
 
         if($auth && !$tokkenAuth)
         {
-            $login_url = 'localhost\.php?resid=' . $resID;
+            $login_url = 'AddResouce.php?resid=' . $resID;
             echo $resID . '</br>' . $login_url . '</br>';
 
             echo '
@@ -103,14 +107,6 @@
             require_once('ResFuncs.php');
             $newAuthTokken = CreateTokken('localhost:44320', $apiKey, $resID);
             echo 'url:http://localhost/myphp/ExampleRes.php?auth=' . $newAuthTokken;
-
-            $shareToken = GetShareTokken($apiKey, $resID);
-
-            $newURL = 'localhost/myphp/AM/ShareRes.php?shareToken=' 
-                . $shareToken
-                . '?resID=' . $resID;
-
-            header('Location: '.$newURL);
         }
     ?>
 

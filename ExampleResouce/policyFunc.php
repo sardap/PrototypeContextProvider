@@ -1,8 +1,9 @@
 <?php
     function CheckPolciy($domain, $apiKey, $resouceID, $name)
     {
-        $name = str_replace(" ", "_", $name);
+        echo 'NAME:' . $resouceID . '</br>';
         $url = 'https://' . $domain . '/api/values/' . $apiKey . '/' . $resouceID . '/' . $name;
+        echo $url . '</br>';
         //Initialize cURL.
         $ch = curl_init();
 

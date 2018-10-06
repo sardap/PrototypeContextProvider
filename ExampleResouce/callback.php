@@ -30,6 +30,9 @@
 
             // You may now want to redirect the user to the home page of your website
             // header('Location: home.php');
+
+            $_SESSION['email'] = $user_info[emails][0][value];
+            header('Location: ExampleRes.php');
         }
         catch(Exception $e) {
             echo $e->getMessage();

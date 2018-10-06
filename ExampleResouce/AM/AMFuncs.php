@@ -84,7 +84,7 @@
 
         if($auth && !$tokkenAuth)
         {
-            $login_url = 'localhost\.php?resid=' . $resID;
+            $login_url = 'AddResouce.php?resid=' . $resID;
             echo $resID . '</br>' . $login_url . '</br>';
 
             echo '
@@ -103,14 +103,6 @@
             require_once('ResFuncs.php');
             $newAuthTokken = CreateTokken('localhost:44320', $apiKey, $resID);
             echo 'url:http://localhost/myphp/ExampleRes.php?auth=' . $newAuthTokken;
-
-            $shareToken = GetShareTokken($apiKey, $resID);
-
-            $newURL = 'localhost/myphp/AM/ShareRes.php?shareToken=' 
-                . $shareToken
-                . '?resID=' . $resID;
-
-            header('Location: '.$newURL);
         }
     ?>
 

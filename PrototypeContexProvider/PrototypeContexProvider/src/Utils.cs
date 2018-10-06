@@ -44,5 +44,11 @@ namespace PrototypeContexProvider.src
 			  .Select(s => s[random.Next(s.Length)]).ToArray());
 		}
 
+		public static string CreateKey(int length)
+		{
+			var keyCreator = new KeyCreator();
+			return keyCreator.CreateKey(length);
+		}
+
 	}
 }

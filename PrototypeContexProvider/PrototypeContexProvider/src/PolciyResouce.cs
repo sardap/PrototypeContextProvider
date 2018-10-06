@@ -43,8 +43,7 @@ namespace PrototypeContexProvider.src
 
 		public string GenrateAndAddAPIKey()
 		{
-			var keyCreator = new KeyCreator();
-			var newKey = keyCreator.CreateKey(KEY_BYTES);
+			var newKey = Utils.CreateKey(KEY_BYTES);
 			OwnershipTable.Add(newKey, new Entry());
 			SaveDB();
 			return newKey;
