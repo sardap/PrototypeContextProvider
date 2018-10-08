@@ -10,18 +10,22 @@
     $resID = str_replace(".php", "", $resID);
     $resID = str_replace(".", "", $resID);
 
-    $tokkenAuth = isset($_GET['auth']) && $tokkenAuth = CheckTokken('localhost:44320', $_GET['auth'], $resID);
-    $apiKey = '9A38075E807090757AAA40FF9470B499D63A56E01BB92F680E3EE09A25DE9D994AFB4E2B940A8197107A5D33C9CC364A5147D79F39C76439E90B4A3A224890C97807849810386707836B23B8C99FF5389AA94659792D';
+    $tokkenAuth = isset($_GET['auth']) || isset($_SESSION['auth']);
 
     $policyVaild = false;
 
     if(isset($_SESSION['email']))
     {
-        $policyVaild = CheckPolciy('localhost:44320', $apiKey, $resID, $_SESSION['email']);
+        echo '</br> EMIAL SET</br>';
+        echo '</br> Auth: ' . $_SESSION['auth'] . '</br>';
+        $apiKey = 'A39D69138C7C1729A02A4D8FC78B7BFEE261C047B11F6E7BBF76E07AB38DD1C87395BC5253426D6DD5E95678DE2E5AE0F22B5A705473E371D6724D363C5DE09EACE6332BB3419CE8A9030285D81D9CE44BA9C7EFDA40';
+        $policyVaild = CheckPolicy('localhost:44320', $apiKey, $_SESSION['auth'], $resID, $_SESSION['email']) == 1 ? true : false;
     }
 
-    echo '</br>POLICY VAILD:' . $policyVaild . '</br>';
+    echo '</br>POLICY VAILD:' . ($policyVaild ? 'TRUE' : 'FALSE') . '</br>';
     $auth = !(!isset($_SESSION['login']) && !($tokkenAuth && $policyVaild));
+    echo 'TOKKEN: ' . ($tokkenAuth ? 'TRUE' : 'FALSE') . '</br>';
+    echo 'AUTH: ' . ($auth ? 'TRUE' : 'FALSE') . '</br>';
 ?>
 <!DOCTYPE html>
 <script src="scripts/main.js"></script>
@@ -69,6 +73,8 @@
             {
                 require_once('settings.php');
 
+                $_SESSION['auth'] = $_GET['auth'];
+
                 $google_login_url = 'https://accounts.google.com/o/oauth2/v2/auth?scope=' . urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me') . '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID . '&access_type=online';        
                 echo '<a href=' . $google_login_url . '>Login with Google</a>';
             }
@@ -99,18 +105,18 @@
     <?php
         if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['someAction']))
         {
-            $apiKey = '9A38075E807090757AAA40FF9470B499D63A56E01BB92F680E3EE09A25DE9D994AFB4E2B940A8197107A5D33C9CC364A5147D79F39C76439E90B4A3A224890C97807849810386707836B23B8C99FF5389AA94659792D';
+            $apiKey = 'A39D69138C7C1729A02A4D8FC78B7BFEE261C047B11F6E7BBF76E07AB38DD1C87395BC5253426D6DD5E95678DE2E5AE0F22B5A705473E371D6724D363C5DE09EACE6332BB3419CE8A9030285D81D9CE44BA9C7EFDA40';
             require_once('ResFuncs.php');
-            $newAuthTokken = CreateTokken('localhost:44320', $apiKey, $resID);
-            echo 'url:http://localhost/myphp/ExampleRes.php?auth=' . $newAuthTokken;
 
-            $shareToken = GetShareTokken($apiKey, $resID);
+            $shareToken = GetShareTokken('localhost:44320', $apiKey, $resID);
 
-            $newURL = 'localhost/myphp/AM/ShareRes.php?shareToken=' 
+            $newURL = 'AM/ShareRes.php?shareToken=' 
                 . $shareToken
-                . '?resID=' . $resID;
+                . '&resID=' . $resID;
+            
+            echo 'NEW URL:' . $newURL . '</br>';
 
-            header('Location: '.$newURL);
+            //header('Location: '.$newURL);
         }
     ?>
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Newtonsoft.Json;
 
@@ -38,6 +39,15 @@ namespace PrototypeContexProvider.src
 			foreach (var item in jsonObjects)
 			{
 				AddKey(item.Key, (string)item.Value);
+			}
+		}
+
+		public void Save(string fileName)
+		{
+			using (StreamWriter streamWriter = new StreamWriter(fileName))
+			{
+				var jsonString = JsonConvert.SerializeObject(this);
+				streamWriter.Write(jsonString);
 			}
 		}
 	}

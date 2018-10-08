@@ -13,11 +13,11 @@ namespace PrototypeContexProvider.src
 
 		public class Entry
 		{
-			public Dictionary<string, long> PolciesResocuce { get; set; }
+			public Dictionary<string, Dictionary<string, long>> PolciesResocuce { get; set; }
 
 			public Entry()
 			{
-				PolciesResocuce = new Dictionary<string, long>();
+				PolciesResocuce = new Dictionary<string, Dictionary<string, long>>();
 			}
 		}
 
