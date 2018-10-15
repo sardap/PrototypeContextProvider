@@ -25,6 +25,32 @@ namespace RestServer.Controllers
 			public string ApiKey { get; set; }
 		}
 
+		private class ConCheckEntry
+		{
+			public long PolicyID;
+			public int UpdateInterval;
+			public double TimeToCheck;
+			public bool LastResult;
+			public TimeSpan NextUpdateTime;
+
+			public ConCheckEntry(long policyID, int interval)
+			{
+				PolicyID = policyID;
+				UpdateInterval = interval;
+				LastResult = false;
+				NextUpdateTime = DateTime.Today.TimeOfDay;
+			}
+
+			public void Update()
+			{
+				if(DateTime.Today.TimeOfDay > NextUpdateTime)
+				{
+					NextUpdateTime = DateTime.Today.TimeOfDay + new TimeSpan(0, 0, 0, 0, (int)UpdateInterval);
+					var policy = LoadFromFile(PolicyID);
+					LastResult = policy.CompositeContex.Check();
+				}
+			}
+		}
 
 		private static Random _random = new Random();
 
@@ -32,6 +58,7 @@ namespace RestServer.Controllers
 		private static HashSet<long> _dataSharingPolcies = new HashSet<long>();
 		private static Dictionary<string, AuthTokenEntry> _tokens = new Dictionary<string, AuthTokenEntry>();
 		private static Dictionary<string, ShareTokkenEntry> _shareTokkens = new Dictionary<string, ShareTokkenEntry>();
+		private static Dictionary<string, ConCheckEntry> _conCheckTable = new Dictionary<string, ConCheckEntry>();
 
 		public static async Task ExportToFile(long id, DataSharingPolciy polciy)
 		{
@@ -55,7 +82,7 @@ namespace RestServer.Controllers
 
 		}
 
-		private DataSharingPolciy LoadFromFile(long id)
+		private static DataSharingPolciy LoadFromFile(long id)
 		{
 			var filePath = "polcies\\policy" + id.ToString() + ".json";
 			return DataSharingPolicyParser.ParseFromFileAsync(filePath).GetAwaiter().GetResult();
@@ -109,6 +136,7 @@ namespace RestServer.Controllers
 
 			var newTokken = Utils.CreateKey(10);
 			_tokens.Add(newTokken, new AuthTokenEntry { ResID = resouceID, PolicyID = policyID });
+
 			return newTokken;
 		}
 
@@ -122,13 +150,20 @@ namespace RestServer.Controllers
 			if (!polciyRes.ContainsKey(tokken))
 				return NotFound();
 
-			var item = LoadFromFile(polciyRes[tokken]);
+			var policyID = polciyRes[tokken];
+
+			var item = LoadFromFile(policyID);
 			if (item == null)
 			{
 				return NotFound();
 			}
 
-			if(item.DataConsumer.Value.ToLower() != ident.ToLower())
+			if(item.Interval > 0 && !_conCheckTable.ContainsKey(tokken))
+			{
+				_conCheckTable.Add(tokken, new ConCheckEntry(policyID, (int)item.Interval));
+			}
+
+			if (item.DataConsumer.Value.ToLower() != ident.ToLower())
 			{
 				return 0;
 			}
@@ -141,10 +176,21 @@ namespace RestServer.Controllers
 		[HttpPost("{shareTokken}/{resouceID}")]
 		public ActionResult<string> Create(string shareTokken, string resouceID, DataSharingPolciy polciy)
 		{
-			if(polciy.Id == 0)
+
+			if(polciy.Id == null)
 			{
 				//TODO make this not shit
 				polciy.Id = Utils.LongRandom(_random);
+			}
+
+			if(polciy.Interval == null)
+			{
+				polciy.Interval = -1;
+			}
+
+			if (!polciy.Vaild())
+			{
+				return "ERROR:Invaild Json";
 			}
 
 			var apiKey = _shareTokkens[shareTokken].ApiKey;
@@ -161,14 +207,25 @@ namespace RestServer.Controllers
 					policyRes.Add(resouceID, new Dictionary<string, long>());
 				}
 
-				policyRes[resouceID].Add(newTokken, polciy.Id);
-				_dataSharingPolcies.Add(polciy.Id);
-				ExportToFile(polciy.Id, polciy);
+				var id = (long)polciy.Id;
+
+				policyRes[resouceID].Add(newTokken, id);
+				_dataSharingPolcies.Add(id);
+				ExportToFile(id, polciy);
 				polciyResouce.SaveDB();
 				return newTokken;
 			}
 
 			return "FAILLED";
+		}
+
+		[HttpGet("CheckCon/{authTokken}", Name = "CheckCon")]
+		public int CheckCon(string authTokken)
+		{
+			var entry = _conCheckTable[authTokken];
+			entry.Update();
+
+			return entry.LastResult ? 1 : 0;
 		}
 
 		// PUT api/values/5

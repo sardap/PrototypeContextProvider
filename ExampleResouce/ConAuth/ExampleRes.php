@@ -1,8 +1,8 @@
 <?php
     session_start();
 
-    require_once('ResFuncs.php');
-    require_once('policyFunc.php');
+    require_once('../ResFuncs.php');
+    require_once('../policyFunc.php');
 
     $resID = str_replace("/", "", $_SERVER['REQUEST_URI']);
     $phpExtPos = strpos($resID, ".php");
@@ -13,12 +13,15 @@
     $tokkenAuth = isset($_GET['auth']) || isset($_SESSION['auth']);
 
     $policyVaild = false;
-
+    
+    $apiKey = 'FDBB583AEA18B2DA3142C2F894C0ED42D2074D1FA78CE0B1FFF29D2D740E7FAB48DC54258A4BA06DE6DBE677A1DA4CBB946A0169BEBDB5BC46CF83F3D2891AB352E2081EB0484E759192C3A4891D5F47292F87412864';
+    echo 'API KEY: ' . $apiKey;
+    
     if(isset($_SESSION['email']))
     {
         echo '</br> EMIAL SET</br>';
         echo '</br> Auth: ' . $_SESSION['auth'] . '</br>';
-        $apiKey = 'A39D69138C7C1729A02A4D8FC78B7BFEE261C047B11F6E7BBF76E07AB38DD1C87395BC5253426D6DD5E95678DE2E5AE0F22B5A705473E371D6724D363C5DE09EACE6332BB3419CE8A9030285D81D9CE44BA9C7EFDA40';
+        echo 'API KEY: ' . $apiKey;
         $policyVaild = CheckPolicy('localhost:44320', $apiKey, $_SESSION['auth'], $resID, $_SESSION['email']) == 1 ? true : false;
     }
 
@@ -39,28 +42,10 @@
     <?php
         if($auth)
         {
-            echo '<table>
-            <tr>
-                <th>Subject</th> 
-                <th>Mark</th>
-                <th>Grade</th>
-            </tr>
-            <tr>
-                <td>Research report A</td>
-                <td>10000</td> 
-                <td>VEHD</td> 
-            </tr>
-            <tr>
-                <td>Paul is cool</td>
-                <td>50</td> 
-                <td>P</td> 
-            </tr>
-            <tr>
-                <td>LSD</td>
-                <td>0</td> 
-                <td>F</td> 
-            </tr>
-            </table>';
+            echo '</br><h>DATA RESOUCE START</h></br>';
+            echo '</br><p id="dataRes"></p></br>';
+            //echo '</br><iframe width="560" height="315" src="https://www.youtube.com/embed/live_stream?channel=UCaCByf9MOMDmalzR79tFtjw" frameborder="0" allowfullscreen></iframe></br>';
+            echo '</br><h>DATA RESOUCE END</h></br></br>';
         }
         else
         {
@@ -71,12 +56,12 @@
             }
             else if(!$policyVaild)
             {
-                require_once('settings.php');
+                require_once('../settings.php');
 
                 $_SESSION['auth'] = $_GET['auth'];
                 $_SESSION['api'] = $apiKey;
 
-                $google_login_url = 'https://accounts.google.com/o/oauth2/v2/auth?scope=' . urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me') . '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID . '&access_type=online';        
+                $google_login_url = 'https://accounts.google.com/o/oauth2/v2/auth?scope=' . urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me') . '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID . '&access_type=online';
                 echo '<a href=' . $google_login_url . '>Login with Google</a>';
             }
             else
@@ -106,8 +91,6 @@
     <?php
         if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['someAction']))
         {
-            $apiKey = 'A39D69138C7C1729A02A4D8FC78B7BFEE261C047B11F6E7BBF76E07AB38DD1C87395BC5253426D6DD5E95678DE2E5AE0F22B5A705473E371D6724D363C5DE09EACE6332BB3419CE8A9030285D81D9CE44BA9C7EFDA40';
-            require_once('ResFuncs.php');
 
             $shareToken = GetShareTokken('localhost:44320', $apiKey, $resID);
 

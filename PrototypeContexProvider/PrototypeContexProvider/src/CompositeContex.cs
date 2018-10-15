@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PrototypeContexProvider.src
@@ -42,6 +43,20 @@ namespace PrototypeContexProvider.src
 			{
 				dynamic daContex = entry.Contex;
 
+				if(entry == Contexies.First())
+				{
+					switch (entry.Glue)
+					{
+						case GlueLogicOperator.And:
+							result = true;
+							break;
+
+						case GlueLogicOperator.Or:
+							result = false;
+							break;
+					}
+				}
+
 				switch (entry.Glue)
 				{
 					case GlueLogicOperator.And:
@@ -51,11 +66,6 @@ namespace PrototypeContexProvider.src
 					case GlueLogicOperator.Or:
 						result = result || daContex.Check();
 						break;
-
-					case GlueLogicOperator.Xor:
-						result = Utils.Xor(result, daContex.Check());
-						break;
-
 				}
 			}
 

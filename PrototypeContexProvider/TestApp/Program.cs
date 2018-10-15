@@ -2,6 +2,7 @@
 using System.IO;
 using PrototypeContexProvider.src;
 using System.Threading.Tasks;
+using PrototypeContexProvider.src.Providers;
 
 namespace TestApp
 {
@@ -12,16 +13,17 @@ namespace TestApp
 		// ChildrenTokens
 		public static async Task<int> AsyncMain()
 		{
+			/*
 			dynamic dAPIKeys = await Utils.ReadFromJson(
 				@"C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\APIKeys.json"
 			);
 
 			APIKeyManger.GetInstance().ReadIn(dAPIKeys);
+			*/
 
-			var tempurtreContexProvider = new TempurtreContexProvider
+			var watch = new WatchLightProvider
 			{
-				CityID = "6952201",
-				SelectedMessurement = TempurtreContexProvider.Messurement.Celius
+				URL = @"https://localhost:44320/api/watch"
 			};
 
 			var compositeContex = new CompositeContex();
@@ -29,26 +31,27 @@ namespace TestApp
 			compositeContex.Add(new Contex
 			{
 				Name = "TempTest",
-				ContextProvider = tempurtreContexProvider,
+				ContextProvider = new NumberContexProvider(){ Number = 3 },
 				Operator = new ContexGreaterThan(),
-				GivenValue = 15
-			});
-			/*
-			var nestedComContex = new CompositeContex();
-			nestedComContex.Add(new Contex
-			{
-				Name = "NestedContex",
-				ContextProvider = new TempurtreContexProvider
-				{
-					CityID = "10",
-					SelectedMessurement = TempurtreContexProvider.Messurement.Celius
-				},
-				Operator = new ContexGreaterThan(),
-				GivenValue = 20
+				GivenValue = 10
 			});
 
-			compositeContex.Add(nestedComContex);
-			*/
+			compositeContex.Add(new Contex
+			{
+				Name = "TempTest",
+				ContextProvider = new NumberContexProvider() { Number = 10 },
+				Operator = new ContexLessThan(),
+				GivenValue = 5
+			});
+
+			compositeContex.Add(new Contex
+			{
+				Name = "TempTest",
+				ContextProvider = new NumberContexProvider() { Number = 15 },
+				Operator = new ContexEqual(),
+				GivenValue = 15
+			});
+
 			var polciy = new DataSharingPolciy
 			{
 				Id = Utils.LongRandom(rnd),
@@ -77,20 +80,9 @@ namespace TestApp
 				}
 			};
 
-			await DataSharingPolicyParser.ExportToJson(polciy, "test.json");
+			await DataSharingPolicyParser.ExportToJson(polciy, "ThreeProviders.json");
 
 			var recoveredPolicy = await DataSharingPolicyParser.ParseFromFileAsync("test.json");
-
-			if (recoveredPolicy.CompositeContex.Check())
-			{
-				Console.WriteLine(new DateTimeProvider { SelectedTimeZone = TimeZoneInfo.Local }.GetValue());
-			}
-			else
-			{
-				Console.WriteLine("Shit");
-			}
-
-			Console.ReadLine();
 
 			return 0;
 		}

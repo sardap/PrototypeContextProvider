@@ -44,7 +44,11 @@
 
             echo "DATA: " . $data;
 
-            echo 'RESULT: '. CreateAndApplyPolicy('localhost:44320', $shareTokken, $resID, $data);
+            $result = CreateAndApplyPolicy('localhost:44320', $shareTokken, $resID, $data);
+
+            $text = strpos($result, 'ERROR:') !== false ? $result = 'URL: ' . $result  : $result ;
+
+            echo 'RESULT: ' . $text;
           }
   
 
