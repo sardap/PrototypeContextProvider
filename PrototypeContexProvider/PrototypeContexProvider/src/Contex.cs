@@ -9,9 +9,6 @@ namespace PrototypeContexProvider.src
 {
 	public class Contex : IContex
 	{
-		[Key]
-		public long Id { get; set; }
-
 		public string Name { get; set; }
 
 		public long Interval { get; set; }

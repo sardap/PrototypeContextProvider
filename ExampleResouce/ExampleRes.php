@@ -14,18 +14,26 @@
 
     $policyVaild = false;
 
+    $debug = false;
+
     if(isset($_SESSION['email']))
     {
-        echo '</br> EMIAL SET</br>';
-        echo '</br> Auth: ' . $_SESSION['auth'] . '</br>';
+        if($debug)
+        {
+            echo '</br> EMIAL SET</br>';
+            echo '</br> Auth: ' . $_SESSION['auth'] . '</br>';
+        }
         $apiKey = 'A39D69138C7C1729A02A4D8FC78B7BFEE261C047B11F6E7BBF76E07AB38DD1C87395BC5253426D6DD5E95678DE2E5AE0F22B5A705473E371D6724D363C5DE09EACE6332BB3419CE8A9030285D81D9CE44BA9C7EFDA40';
         $policyVaild = CheckPolicy('localhost:44320', $apiKey, $_SESSION['auth'], $resID, $_SESSION['email']) == 1 ? true : false;
     }
 
-    echo '</br>POLICY VAILD:' . ($policyVaild ? 'TRUE' : 'FALSE') . '</br>';
     $auth = !(!isset($_SESSION['login']) && !($tokkenAuth && $policyVaild));
-    echo 'TOKKEN: ' . ($tokkenAuth ? 'TRUE' : 'FALSE') . '</br>';
-    echo 'AUTH: ' . ($auth ? 'TRUE' : 'FALSE') . '</br>';
+    if($debug)
+    {
+        echo '</br>POLICY VAILD:' . ($policyVaild ? 'TRUE' : 'FALSE') . '</br>';
+        echo 'TOKKEN: ' . ($tokkenAuth ? 'TRUE' : 'FALSE') . '</br>';
+        echo 'AUTH: ' . ($auth ? 'TRUE' : 'FALSE') . '</br>';
+    }
 ?>
 <!DOCTYPE html>
 <script src="scripts/main.js"></script>
@@ -34,38 +42,32 @@
 
 <meta charset="utf-8" />
 <title>Example Resouce</title>
+<style>
+.center {
+    margin: auto;
+    width: 90%;
+    border: 3px solid #D3D3D3;
+    text-align: center;
+    padding: 50px;
+}
+a {
+    font-size: 30px;
+}
+</style>
 </head>
 <body>
     <?php
+        echo '<div class="center">';
         if($auth)
         {
-            echo '<table>
-            <tr>
-                <th>Subject</th> 
-                <th>Mark</th>
-                <th>Grade</th>
-            </tr>
-            <tr>
-                <td>Research report A</td>
-                <td>10000</td> 
-                <td>VEHD</td> 
-            </tr>
-            <tr>
-                <td>Paul is cool</td>
-                <td>50</td> 
-                <td>P</td> 
-            </tr>
-            <tr>
-                <td>LSD</td>
-                <td>0</td> 
-                <td>F</td> 
-            </tr>
-            </table>';
+            echo '<embed src="files/Brochure.pdf" type="application/pdf" width="100%" height="600px" />';
         }
         else
         {
             if(!$tokkenAuth)
             {
+                echo '<img src="images/stop.svg" alt="No entry" style="width:300px;height:300px;"></br>';
+
                 $login_url = 'ExampleResLogin.php';
                 echo '<a href=' . $login_url . '>Log in</a>';
             }
@@ -87,12 +89,18 @@
     ?>
     
     <?php
-        echo 'AUTHTOKKENUSED:' . ($tokkenAuth ? 1 : 0) . '</br>';
+        if($debug)
+        {
+            echo 'AUTHTOKKENUSED:' . ($tokkenAuth ? 1 : 0) . '</br>';
+        }
+
 
         if($auth && !$tokkenAuth)
         {
             $login_url = 'localhost\.php?resid=' . $resID;
-            echo $resID . '</br>' . $login_url . '</br>';
+
+            if($debug)
+                echo $resID . '</br>' . $login_url . '</br>';
 
             echo '
             <form action="ExampleRes.php" method="post">
@@ -119,6 +127,7 @@
 
             //header('Location: '.$newURL);
         }
+        echo '</div>';
     ?>
 
 </body>

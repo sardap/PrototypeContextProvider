@@ -14,6 +14,25 @@ namespace RestServer.Controllers
 	public class WatchController : ControllerBase
 	{
 		private static int _lastValue;
+		private static Location _currentLocation = new Location();
+
+		[HttpGet("SetLoaction/zibqmpenzd/{lat}/{lon}", Name = "SetLocation")]
+		public ActionResult<bool> SetLoaction(string lat, string lon)
+		{
+			lat = lat.Replace('_', '.');
+			lon = lon.Replace('_', '.');
+
+			_currentLocation.Lat = double.Parse(lat);
+			_currentLocation.Lon = double.Parse(lon);
+
+			return true;
+		}
+
+		[HttpGet("GetLocation/zibqmpenzd", Name = "GetLocation")]
+		public ActionResult<string> GetLocation()
+		{
+			return _currentLocation.ToString();
+		}
 
 		// GET api/values
 		[HttpGet]

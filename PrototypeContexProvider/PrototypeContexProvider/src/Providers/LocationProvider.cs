@@ -4,21 +4,30 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text;
+using System.Net;
+using System.IO;
 
 namespace PrototypeContexProvider.src
 {
 	public class LocationProvider : IContextProvider
 	{
+		public string URL { get; set; }
+
 		public dynamic GetValue()
 		{
-			GoogleGeocodingAPI.GoogleAPIKey = APIKeyManger.GetInstance().GetApiKey("GoogleLocation");
-			var task = Task.Run(async () => await GoogleGeocodingAPI.GetCoordinatesFromAddressAsync("100 Market St, Southbank"));
-			task.Wait();
-			var asyncFunctionResult = task.Result;
-			var latitude = asyncFunctionResult.Item1;
-			var longitude = asyncFunctionResult.Item2;
+			string html = string.Empty;
 
-			throw new NotImplementedException();
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
+			request.AutomaticDecompression = DecompressionMethods.GZip;
+
+			using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+			using (Stream stream = response.GetResponseStream())
+			using (StreamReader reader = new StreamReader(stream))
+			{
+				html = reader.ReadToEnd();
+			}
+
+			return new Location(html);
 		}
 	}
 }

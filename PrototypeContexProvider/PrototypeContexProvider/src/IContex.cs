@@ -8,9 +8,6 @@ namespace PrototypeContexProvider.src
 {
 	public interface IContex
 	{
-		[Key]
-		long Id { get; set; }
-
 		[JsonProperty(nameof(IContexOperator))]
 		IContexOperator Operator { get; set; }
 

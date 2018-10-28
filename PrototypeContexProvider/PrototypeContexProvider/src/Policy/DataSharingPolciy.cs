@@ -28,10 +28,16 @@ namespace PrototypeContexProvider.src
 			// Gets every property and puts them in a list
 			var properties = GetType().GetProperties().ToList();
 			// property Should be null
-			properties.RemoveAt(5);
+			properties.RemoveAt(6);
 
 			// Foreach property get the value and make sure it is not null
 			return properties.All(i => i.GetValue(this) != null);
+		}
+
+		public bool Check(string ident)
+		{
+			var compositeResult = CompositeContex.Check();
+			return ident == DataConsumer.Value && compositeResult;
 		}
 	}
 }

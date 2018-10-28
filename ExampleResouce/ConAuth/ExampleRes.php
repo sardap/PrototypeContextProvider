@@ -20,9 +20,12 @@
     if(isset($_SESSION['email']))
     {
         echo '</br> EMIAL SET</br>';
-        echo '</br> Auth: ' . $_SESSION['auth'] . '</br>';
+        $auth = isset($_SESSION['auth']) ? $_SESSION['auth'] : $_GET['auth'];
+        str_replace("\n", "", $auth);
+
+        echo '</br><p id="auth">'.$auth.'</p></br>';
         echo 'API KEY: ' . $apiKey;
-        $policyVaild = CheckPolicy('localhost:44320', $apiKey, $_SESSION['auth'], $resID, $_SESSION['email']) == 1 ? true : false;
+        $policyVaild = CheckPolicy('localhost:44320', $apiKey, $auth, $resID, $_SESSION['email']) == 1 ? true : false;
     }
 
     echo '</br>POLICY VAILD:' . ($policyVaild ? 'TRUE' : 'FALSE') . '</br>';
@@ -31,7 +34,7 @@
     echo 'AUTH: ' . ($auth ? 'TRUE' : 'FALSE') . '</br>';
 ?>
 <!DOCTYPE html>
-<script src="scripts/main.js"></script>
+<script src="main.js"></script>
 <html>
 <head>
 
@@ -43,8 +46,7 @@
         if($auth)
         {
             echo '</br><h>DATA RESOUCE START</h></br>';
-            echo '</br><p id="dataRes"></p></br>';
-            //echo '</br><iframe width="560" height="315" src="https://www.youtube.com/embed/live_stream?channel=UCaCByf9MOMDmalzR79tFtjw" frameborder="0" allowfullscreen></iframe></br>';
+            echo '</br><iframe id="datares" width="560" height="315" src="https://www.youtube.com/embed/live_stream?channel=UCaCByf9MOMDmalzR79tFtjw" frameborder="0" allowfullscreen></iframe></br>';
             echo '</br><h>DATA RESOUCE END</h></br></br>';
         }
         else

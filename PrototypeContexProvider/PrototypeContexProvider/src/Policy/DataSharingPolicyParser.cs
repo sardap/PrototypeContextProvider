@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -45,7 +46,7 @@ namespace PrototypeContexProvider.src
 		{
 			using (StreamWriter r = new StreamWriter(fileName))
 			{
-				await r.WriteAsync(ExportToJsonString(dataSharingPolicy));
+				await r.WriteAsync(JToken.Parse(ExportToJsonString(dataSharingPolicy)).ToString(Formatting.Indented));
 			}
 		}
 

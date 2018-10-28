@@ -1,0 +1,31 @@
+{
+  "Id": 5547285426778530562,
+  "Author": "Paul",
+  "Proity": 0,
+  "Interval": -1,
+  "Decision": "test",
+  "DataConsumer": {
+    "Id": 0,
+    "Name": "NotPaul",
+    "Value": "Paul"
+  },
+  "JsonCompositeContex": {
+    "Id": 0,
+    "Conteiexs": [
+    ]
+  },
+  "PrivacyOblgations": {
+    "Id": 0,
+    "Purpose": "Testing",
+    "Granularity": "Garbage",
+    "Anonymisation": "Garbage",
+    "Notifaction": "Garbage",
+    "Accounting": "Garbage"
+  },
+  "ResharingObligations": {
+    "Id": 0,
+    "CanShare": false,
+    "Cardinality": 10,
+    "Recurring": 10
+  }
+}

@@ -7,7 +7,6 @@ namespace PrototypeContexProvider.src
 {
 	public class CompositeContex  : IContex
 	{
-		public long Id { get; set; }
 
 		private class Entry
 		{
@@ -57,14 +56,21 @@ namespace PrototypeContexProvider.src
 					}
 				}
 
+				var checkResult = daContex.Check();
+
+				if(entry.Not)
+				{
+					checkResult = !checkResult;
+				}
+
 				switch (entry.Glue)
 				{
 					case GlueLogicOperator.And:
-						result = result && daContex.Check();
+						result = result && checkResult;
 						break;
 
 					case GlueLogicOperator.Or:
-						result = result || daContex.Check();
+						result = result || checkResult;
 						break;
 				}
 			}

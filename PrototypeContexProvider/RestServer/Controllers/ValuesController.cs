@@ -38,14 +38,14 @@ namespace RestServer.Controllers
 				PolicyID = policyID;
 				UpdateInterval = interval;
 				LastResult = false;
-				NextUpdateTime = DateTime.Today.TimeOfDay;
+				NextUpdateTime = DateTime.Now.TimeOfDay;
 			}
 
 			public void Update()
 			{
-				if(DateTime.Today.TimeOfDay > NextUpdateTime)
+				if (DateTime.Now.TimeOfDay> NextUpdateTime)
 				{
-					NextUpdateTime = DateTime.Today.TimeOfDay + new TimeSpan(0, 0, 0, 0, (int)UpdateInterval);
+					NextUpdateTime = DateTime.Now.TimeOfDay + new TimeSpan(0, 0, 0, 0, (int)UpdateInterval);
 					var policy = LoadFromFile(PolicyID);
 					LastResult = policy.CompositeContex.Check();
 				}
@@ -226,6 +226,12 @@ namespace RestServer.Controllers
 			entry.Update();
 
 			return entry.LastResult ? 1 : 0;
+		}
+
+		[HttpGet("CheckCon/GetInterval/{authTokken}", Name = "GetInterval")]
+		public int GetInterval(string authTokken)
+		{
+			return _conCheckTable[authTokken].UpdateInterval;
 		}
 
 		// PUT api/values/5
