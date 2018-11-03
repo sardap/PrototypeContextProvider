@@ -217,15 +217,18 @@ a.button {
 
             $shareToken = GetShareTokken('localhost:44320', $apiKey, $resID);
 
+            $encodedURL = rawurlencode($_SERVER['REQUEST_URI']);
+            
             $newURL = 'AM/ShareRes.php?shareToken=' 
                 . $shareToken
-                . '&resID=' . $resID;
+                . '&resID=' . $resID
+                . '&callback=' . $encodedURL;
 
             $newURL = 'http://localhost/myphp/' . $newURL;
-
+        
             echo '<a href=' . $newURL . '>Click here to share</a>';
 
-            //header('Location: '.$newURL);
+            header('Location: '.$newURL);
         }
         echo '</div>';
     ?>
