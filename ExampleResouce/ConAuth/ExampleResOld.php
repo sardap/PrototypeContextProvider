@@ -1,8 +1,10 @@
 <?php
     session_start();
 
-    require_once('ResFuncs.php');
-    require_once('policyFunc.php');
+    require_once('../ResFuncs.php');
+    require_once('../policyFunc.php');
+
+    $debug = false;
 
     $resID = str_replace("/", "", $_SERVER['REQUEST_URI']);
     $phpExtPos = strpos($resID, ".php");
@@ -13,21 +15,30 @@
     $tokkenAuth = isset($_GET['auth']) || isset($_SESSION['auth']);
 
     $policyVaild = false;
+    
+    $apiKey = 'FDBB583AEA18B2DA3142C2F894C0ED42D2074D1FA78CE0B1FFF29D2D740E7FAB48DC54258A4BA06DE6DBE677A1DA4CBB946A0169BEBDB5BC46CF83F3D2891AB352E2081EB0484E759192C3A4891D5F47292F87412864';
 
-    $debug = false;
-
+    if($debug)
+        echo 'API KEY: ' . $apiKey;
+    
     if(isset($_SESSION['email']))
     {
         if($debug)
-        {
             echo '</br> EMIAL SET</br>';
-            echo '</br> Auth: ' . $_SESSION['auth'] . '</br>';
+        $auth = isset($_SESSION['auth']) ? $_SESSION['auth'] : $_GET['auth'];
+        str_replace("\n", "", $auth);
+
+        if($debug)
+        {
+            echo '</br><p id="auth">'.$auth.'</p></br>';
+            echo 'API KEY: ' . $apiKey;
         }
-        $apiKey = 'A39D69138C7C1729A02A4D8FC78B7BFEE261C047B11F6E7BBF76E07AB38DD1C87395BC5253426D6DD5E95678DE2E5AE0F22B5A705473E371D6724D363C5DE09EACE6332BB3419CE8A9030285D81D9CE44BA9C7EFDA40';
-        $policyVaild = CheckPolicy('localhost:44320', $apiKey, $_SESSION['auth'], $resID, $_SESSION['email']) == 1 ? true : false;
+    
+        $policyVaild = CheckPolicy('localhost:44320', $apiKey, $auth, $resID, $_SESSION['email']) == 1 ? true : false;
     }
 
     $auth = !(!isset($_SESSION['login']) && !($tokkenAuth && $policyVaild));
+
     if($debug)
     {
         echo '</br>POLICY VAILD:' . ($policyVaild ? 'TRUE' : 'FALSE') . '</br>';
@@ -36,7 +47,7 @@
     }
 ?>
 <!DOCTYPE html>
-<script src="scripts/main.js"></script>
+<script src="main.js"></script>
 <html>
 <head>
 <meta charset="utf-8" />
@@ -136,34 +147,41 @@ a.button {
 }
 </style>
 </head>
+<title>Example Resouce</title>
+</head>
 <body>
     <?php
         echo '<div class="center">';
         if($auth)
         {
-            echo '<embed src="files/res.pdf" type="application/pdf" width="100%" height="600px" />';
+            if($debug)
+                echo '</br><h>DATA RESOUCE START</h></br>';
+    
+            echo '</br><iframe id="datares" width="560" height="315" src="https://www.youtube.com/embed/live_stream?channel=UCaCByf9MOMDmalzR79tFtjw" frameborder="0" allowfullscreen></iframe></br>';
+    
+            if($debug)
+                echo '</br><h>DATA RESOUCE END</h></br></br>';
         }
         else
         {
             if(!$tokkenAuth)
             {
-                echo '<img src="images/stop.svg" alt="No entry" style="width:300px;height:300px;"></br>';
-
+                echo '<img src="images/stop.svg" alt="No entry" style="width:300px;height:300px;margin:50px;"></br>';
                 $login_url = 'ExampleResLogin.php';
                 echo '<a href=' . $login_url . '>Log in</a>';
             }
             else if(!$policyVaild)
             {
-                require_once('settings.php');
+                require_once('../settings.php');
 
-                $_SESSION['auth'] = $_GET['auth'];
+                if(isset($_GET['auth']))
+                    $_SESSION['auth'] = $_GET['auth'];
+
                 $_SESSION['api'] = $apiKey;
-                $_SESSION['callback'] = $_SERVER['REQUEST_URI'];
-
-                $google_login_url = 'https://accounts.google.com/o/oauth2/v2/auth?scope=' . urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me') . '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID . '&access_type=online';        
 
                 echo '<img src="images/stop.svg" alt="No entry" style="width:300px;height:300px;margin:50px;"></br>';
 
+                $google_login_url = 'https://accounts.google.com/o/oauth2/v2/auth?scope=' . urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me') . '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID . '&access_type=online';
                 echo '<a href=' . $google_login_url . ' class="loginBtn loginBtn--google button">Login with Google</a>';
             }
             else
@@ -175,10 +193,7 @@ a.button {
     
     <?php
         if($debug)
-        {
             echo 'AUTHTOKKENUSED:' . ($tokkenAuth ? 1 : 0) . '</br>';
-        }
-
 
         if($auth && !$tokkenAuth)
         {
@@ -188,7 +203,7 @@ a.button {
                 echo $resID . '</br>' . $login_url . '</br>';
 
             echo '
-            <form action="ExampleRes.php" method="post" id="shareButton">
+            <form action="ExampleRes.php" method="post" style="margin:50px;">
                 <input type="submit" name="someAction" value="SHARE" />
             </form>
             ';
@@ -199,32 +214,18 @@ a.button {
     <?php
         if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['someAction']))
         {
-            ?>
-            <style type="text/css">
-            #shareButton {
-                display:none;
-            }
-            </style>
-            <?php
-            
-
-            $apiKey = 'A39D69138C7C1729A02A4D8FC78B7BFEE261C047B11F6E7BBF76E07AB38DD1C87395BC5253426D6DD5E95678DE2E5AE0F22B5A705473E371D6724D363C5DE09EACE6332BB3419CE8A9030285D81D9CE44BA9C7EFDA40';
-            require_once('ResFuncs.php');
 
             $shareToken = GetShareTokken('localhost:44320', $apiKey, $resID);
 
-            $encodedURL = rawurlencode($_SERVER['REQUEST_URI']);
-
             $newURL = 'AM/ShareRes.php?shareToken=' 
                 . $shareToken
-                . '&resID=' . $resID
-                . '&callback=' . $encodedURL;
+                . '&resID=' . $resID;
 
             $newURL = 'http://localhost/myphp/' . $newURL;
-        
+
             echo '<a href=' . $newURL . '>Click here to share</a>';
 
-            header('Location: '.$newURL);
+            //header('Location: '.$newURL);
         }
         echo '</div>';
     ?>

@@ -2,7 +2,6 @@
     function CheckShareTokken($domain, $tokken, $resID)
     {
         $url = 'https://' . $domain . '/api/values/shareTokken/check/' . $tokken . '/' . $resID;
-        echo '</br>' . $url . '</br>';
         //Initialize cURL.
         $ch = curl_init();
 
@@ -25,7 +24,6 @@
     {
         
         $url = 'https://' . $domain . '/api/values/' . $shareTokken . '/' . $resID;
-        echo '</br>CREATE: ' . $url . '</br>';
         
         $ch = curl_init($url);
 

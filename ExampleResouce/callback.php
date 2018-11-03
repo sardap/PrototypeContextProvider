@@ -32,7 +32,7 @@
             // header('Location: home.php');
 
             $_SESSION['email'] = $user_info[emails][0][value];
-            header('Location: ExampleRes.php');
+            header('Location: ' . $_SESSION['callback']);
         }
         catch(Exception $e) {
             echo $e->getMessage();

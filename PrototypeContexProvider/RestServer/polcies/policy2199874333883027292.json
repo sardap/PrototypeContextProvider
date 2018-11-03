@@ -1,0 +1,47 @@
+{
+  "Id": 2199874333883027292,
+  "Author": "Paul",
+  "Proity": 0,
+  "Interval": -1,
+  "Decision": "test",
+  "DataConsumer": {
+    "Id": 0,
+    "Name": "NotPaul",
+    "Value": "pfsarda23@gmail.com"
+  },
+  "JsonCompositeContex": {
+    "Id": 0,
+    "Conteiexs": [
+      {
+        "Id": 0,
+        "Contex": {
+          "Name": "TempTest",
+          "Interval": 0,
+          "ContextProvider": {
+            "$type": "PrototypeContexProvider.src.TempurtreContexProvider, PrototypeContexProvider",
+            "CityID": "6952201",
+            "SelectedMessurement": 1
+          },
+          "GivenValue": 0,
+          "IContexOperator": {
+            "$type": "PrototypeContexProvider.src.ContexGreaterThan, PrototypeContexProvider"
+          }
+        },
+        "Glue": 0,
+        "Not": false
+      }
+    ]
+  },
+  "PrivacyOblgations": {
+    "Purpose": "Testing",
+    "Granularity": "Garbage",
+    "Anonymisation": "Garbage",
+    "Notifaction": "Garbage",
+    "Accounting": "Garbage"
+  },
+  "ResharingObligations": {
+    "CanShare": false,
+    "Cardinality": 10,
+    "Recurring": 10
+  }
+}

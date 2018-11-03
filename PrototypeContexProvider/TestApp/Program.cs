@@ -104,26 +104,28 @@ namespace TestApp
 
 			//before your loop
 			var csv = new StringBuilder();
-			var newLine = string.Format("Name, 10, 100, 1000, 10000, 100000 ");
+			var newLine = string.Format("Name, 10, 100, 1000, 10000 ");
 			csv.AppendLine(newLine);
 
 			var vaules = new List<double>();
-			var lengthsToCheck = new List<int>() { 10, 100, 1000, 10000, 100000 };
+			var lengthsToCheck = new List<int>() { 10, 100, 1000, 10000 };
 
-			foreach(var policy in recoveredPolicys)
+			Console.WriteLine("Benchmark Starting");
+			foreach (var policy in recoveredPolicys)
 			{
 				string curCSV = csv.ToString();
 
 				foreach (var length in lengthsToCheck)
 				{
-					vaules.Add(await BenchUnLoadedReuslt(length, policy.Value));
+					vaules.Add(await BenchLoadedReusltAsync(length, policy.Value));
 				}
 
 				csv.AppendLine(string.Format("{0}, {1}", policy.Key, string.Join(",", vaules.Select(x => x.ToString()).ToArray())));
 				vaules.Clear();
 			}
+			Console.WriteLine("Benchmark complete");
 
-			using (StreamWriter streamWriter = new StreamWriter("UnloadedBenchmark.csv"))
+			using (StreamWriter streamWriter = new StreamWriter("LoadedInBenchmark.csv"))
 			{
 				await streamWriter.WriteAsync(csv.ToString());
 			}
@@ -141,6 +143,7 @@ namespace TestApp
 		{
 			Stopwatch stopwatch = new Stopwatch();
 
+			Console.WriteLine("Testing file {0} for {1} loops", fileName, n);
 			stopwatch.Start();
 			for (int i = 0; i < n; i++)
 			{
@@ -155,9 +158,11 @@ namespace TestApp
 		}
 
 
-		private static double BenchLoadedReuslt(int n, DataSharingPolciy policy)
+		private static async Task<double> BenchLoadedReusltAsync(int n, string fileName)
 		{
 			Stopwatch stopwatch = new Stopwatch();
+
+			var policy = await DataSharingPolicyParser.ParseFromFileAsync(fileName);
 
 			stopwatch.Start();
 			for(int i = 0; i < n; i++)

@@ -1,9 +1,7 @@
 <?php
     function GetShareTokken($domain, $apiKey, $resouceID)
     {
-        echo 'FucFace';
         $url = 'https://' . $domain . '/api/values/shareTokken/' . $apiKey . '/' . $resouceID;
-        echo '</br>' . $url . '</br>';
         //Initialize cURL.
         $ch = curl_init();
 
@@ -25,7 +23,6 @@
     function CreateTokken($domain, $apiKey, $resouceID)
     {
         $url = 'https://' . $domain . '/api/values/GetTokken/' . $apiKey . '/' . $resouceID;
-        echo '</br>' . $url . '</br>';
         //Initialize cURL.
         $ch = curl_init();
 
@@ -53,7 +50,7 @@
             $resID . '/' . 
             $ident;
             
-        echo '</br>' . $url . '</br>';
+        //echo '</br>' . $url . '</br>';
         //Initialize cURL.
         $ch = curl_init();
 

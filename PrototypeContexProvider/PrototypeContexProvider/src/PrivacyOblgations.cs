@@ -7,8 +7,6 @@ namespace PrototypeContexProvider.src
 {
 	public class PrivacyOblgations
 	{
-		[Key]
-		public long Id { get; set; }
 		public string Purpose { get; set; }
 		public string Granularity{get; set;}
 		public string Anonymisation{get; set;}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="3.0" package="org.example.heatrate3" version="1.0.0">
+    <profile name="wearable"/>
+    <ui-application appid="org.example.heatrate3" exec="heatrate3" multiple="false" nodisplay="false" taskmanage="true" type="capp">
+        <label>heatrate3</label>
+        <icon>heatrate3.png</icon>
+    </ui-application>
+    <privileges>
+        <privilege>http://tizen.org/privilege/network.get</privilege>
+        <privilege>http://tizen.org/privilege/network.set</privilege>
+        <privilege>http://tizen.org/privilege/internet</privilege>
+    </privileges>
+    <feature name="http://tizen.org/feature/screen.size.all"/>
+</manifest>
