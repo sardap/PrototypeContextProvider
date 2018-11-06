@@ -1,10 +1,12 @@
 {
-  "Author": "Paul",
+  "Id": 5673368919056098613,
+  "Author": "notpaul",
   "Proity": 0,
-  "Interval": -1,
-  "Decision": "test",
+  "Interval": 0,
+  "Decision": "garbage",
   "DataConsumer": {
-    "Name": "NotPaul",
+    "Id": 0,
+    "Name": "paul",
     "Value": "pfsarda23@gmail.com"
   },
   "JsonCompositeContex": {
@@ -31,14 +33,14 @@
     ]
   },
   "PrivacyOblgations": {
-    "Purpose": "Testing",
-    "Granularity": "Garbage",
-    "Anonymisation": "Garbage",
-    "Notifaction": "Garbage",
-    "Accounting": "Garbage"
+    "Purpose": "garbage",
+    "Granularity": "garbage",
+    "Anonymisation": "garbage",
+    "Notifaction": "garbage",
+    "Accounting": "garbage"
   },
   "ResharingObligations": {
-    "CanShare": false,
+    "CanShare": true,
     "Cardinality": 10,
     "Recurring": 10
   }

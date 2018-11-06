@@ -1,17 +1,17 @@
 {
-  "Author": "Paul",
+  "Id": 1156735487247805886,
+  "Author": "notpaul",
   "Proity": 0,
-  "Interval": -1,
-  "Decision": "test",
+  "Interval": 0,
+  "Decision": "garbage",
   "DataConsumer": {
-    "Name": "NotPaul",
+    "Id": 0,
+    "Name": "paul",
     "Value": "pfsarda23@gmail.com"
   },
   "JsonCompositeContex": {
-    "Id": 0,
     "Conteiexs": [
       {
-        "Id": 0,
         "Contex": {
           "Name": "TempTest",
           "Interval": 0,
@@ -31,14 +31,14 @@
     ]
   },
   "PrivacyOblgations": {
-    "Purpose": "Testing",
-    "Granularity": "Garbage",
-    "Anonymisation": "Garbage",
-    "Notifaction": "Garbage",
-    "Accounting": "Garbage"
+    "Purpose": "garbage",
+    "Granularity": "garbage",
+    "Anonymisation": "garbage",
+    "Notifaction": "garbage",
+    "Accounting": "garbage"
   },
   "ResharingObligations": {
-    "CanShare": false,
+    "CanShare": true,
     "Cardinality": 10,
     "Recurring": 10
   }

@@ -117,8 +117,6 @@ namespace RestServer.Controllers
 			return newTokken;
 		}
 
-
-
 		[HttpGet("checkTokken/{tokken}/{resouceID}", Name = "CheckTokken")]
 		public ActionResult<int> CheckTokken(string tokken, string resouceID)
 		{
