@@ -132,14 +132,6 @@ a {
       "default":0,
       "description": "Priority"
     },
-    "Interval": {
-      "type": "integer",
-      "title": "Interval",
-      "minimum": 0,
-      "maximum": 100000,
-      "default":0,
-      "description": "Interval which the policy is evaluated 0 for static"
-    },
     "Decision": {
       "type": "string",
       "title": "Decision",

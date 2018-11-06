@@ -23,7 +23,7 @@ namespace RestServer.Controllers
 		private class AuthTokenEntry
 		{
 			public string ResID { get; set; }
-			public long PolicyID { get; set; }
+			public bool Result { get; set; }
 		}
 
 		private class ShareTokkenEntry
@@ -79,9 +79,9 @@ namespace RestServer.Controllers
 
 		//TODO Make this not bad 
 		private static HashSet<long> _dataSharingPolcies = new HashSet<long>();
-		private static Dictionary<string, AuthTokenEntry> _tokens = new Dictionary<string, AuthTokenEntry>();
+
 		private static Dictionary<string, SecTokenEntry> _secTokken = new Dictionary<string, SecTokenEntry>();
-		private static Dictionary<string, bool> _authTokken = new Dictionary<string, bool>();
+		private static Dictionary<string, AuthTokenEntry> _authTokken = new Dictionary<string, AuthTokenEntry>();
 
 
 		private static Dictionary<string, ShareTokkenEntry> _shareTokkens = new Dictionary<string, ShareTokkenEntry>();
@@ -144,34 +144,9 @@ namespace RestServer.Controllers
 			return newTokken;
 		}
 
-		[HttpGet("checkTokken/{tokken}/{resouceID}", Name = "CheckTokken")]
-		public ActionResult<int> CheckTokken(string tokken, string resouceID)
-		{
-			return _tokens[tokken].ResID == resouceID ? 1 : 0;
-		}
-
-		[HttpGet("GetTokken/{apiKey}/{resouceID}/{policyID}", Name = "GetTokken")]
-		public ActionResult<string> GetTokken(string apiKey, string resouceID, long policyID)
-		{
-			var pr = PolciyResouce.GetInstance();
-			var apiKeyEntry = pr.OwnershipTable[apiKey];
-
-			if (!apiKeyEntry.PolciesResocuce.ContainsKey(resouceID))
-				return NotFound();
-
-			var newTokken = Utils.CreateKey(10);
-			_tokens.Add(newTokken, new AuthTokenEntry { ResID = resouceID, PolicyID = policyID });
-
-			return newTokken;
-		}
-
 		[HttpGet("CheckSecTokken/{tokken}/{ident}", Name = "CheckSecTokken")]
 		public ActionResult<string> CheckSecTokken(string tokken, string ident)
 		{
-			var shutcunt = _secTokken.Count;
-
-			bool fuckyouCuntface = _secTokken.ContainsKey(tokken);
-
 			var secTokkenEntry = _secTokken[tokken];
 			var item = LoadFromFile(secTokkenEntry.PolicyID);
 
@@ -188,27 +163,28 @@ namespace RestServer.Controllers
 				_conCheckTable.TryAdd(authTokken, new ConCheckEntry(secTokkenEntry.PolicyID, item));
 			}
 
-			_authTokken.Add(authTokken, comContexResult);
+			_authTokken.Add(authTokken, new AuthTokenEntry() { ResID = _secTokken[tokken].ResID, Result = comContexResult } );
 
 			return authTokken;
 		}
 
-		[HttpGet("CheckAuthTokken/{tokken}", Name = "CheckAuthTokken")]
-		public ActionResult<int> CheckAuthTokken(string tokken)
+		[HttpGet("CheckAuthTokken/{tokken}/{resID}", Name = "CheckAuthTokken")]
+		public ActionResult<int> CheckAuthTokken(string tokken, string resID)
 		{
 			if (!_authTokken.ContainsKey(tokken))
 				return 0;
 
-			var vaildAuth = _authTokken[tokken];
+			if (_authTokken[tokken].ResID != resID)
+				return 0;
 
-			if(vaildAuth)
-			{
-				return 1;
-			}
-			else
+			var vaildAuth = _authTokken[tokken].Result;
+
+			if(!vaildAuth)
 			{
 				return 0;
 			}
+
+			return 1;
 		}
 
 		[HttpPost("{shareTokken}/{resouceID}")]

@@ -1,0 +1,51 @@
+{
+  "Id": 6983655878815859021,
+  "Author": "notpaul",
+  "Proity": 0,
+  "Interval": -1,
+  "Decision": "garbage",
+  "DataConsumer": {
+    "Id": 0,
+    "Name": "paul",
+    "Value": "pfsarda23@gmail.com"
+  },
+  "JsonCompositeContex": {
+    "Id": 0,
+    "Conteiexs": [
+      {
+        "Id": 0,
+        "Contex": {
+          "Name": "TempTest",
+          "Interval": 100,
+          "ContextProvider": {
+            "$type": "PrototypeContexProvider.src.LocationProvider, PrototypeContexProvider",
+            "URL": "https://restserver.conveyor.cloud/api/watch/GetLocation/zibqmpenzd"
+          },
+          "GivenValue": {
+            "$type": "PrototypeContexProvider.src.Location, PrototypeContexProvider",
+            "Lat": -37.83933,
+            "Lon": 145.2042165
+          },
+          "IContexOperator": {
+            "$type": "PrototypeContexProvider.src.ContexOperators.LocationInRange, PrototypeContexProvider",
+            "Radius": 100
+          }
+        },
+        "Glue": 0,
+        "Not": false
+      }
+    ]
+  },
+  "PrivacyOblgations": {
+    "Purpose": "garbage",
+    "Granularity": "garbage",
+    "Anonymisation": "garbage",
+    "Notifaction": "garbage",
+    "Accounting": "garbage"
+  },
+  "ResharingObligations": {
+    "CanShare": true,
+    "Cardinality": 10,
+    "Recurring": 10
+  }
+}

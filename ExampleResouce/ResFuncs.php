@@ -69,11 +69,12 @@
         return $data == 1 ? true : false;
     }
 
-    function CheckAuthTokken($domain, $tokken)
+    function CheckAuthTokken($domain, $tokken, $resID)
     {
         $url = 'https://' . 
             $domain . '/api/values/CheckAuthTokken/' . 
-            $tokken;
+            $tokken . '/' .
+            $resID;
             
         //echo '</br>' . $url . '</br>';
         //Initialize cURL.

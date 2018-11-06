@@ -1,0 +1,46 @@
+{
+    "Author": "Not paul",
+    "Proity": 0,
+    "Decision": "Sharing ip camrea",
+    "DataConsumer": {
+        "Name": "paul ",
+        "Value": "pfsarda23@gmail.com"
+    },
+    "PrivacyOblgations": {
+        "Purpose": "View my IP camrea when im not home",
+        "Granularity": "None",
+        "Anonymisation": "None",
+        "Notifaction": "None",
+        "Accounting": "None"
+    },
+    "ResharingObligations": {
+        "CanShare": false,
+        "Cardinality": 0,
+        "Recurring": 0
+    },
+    "JsonCompositeContex": {
+        "Conteiexs": [
+        {
+            "Contex": {
+            "Name": "TempTest",
+            "Interval": 100,
+            "ContextProvider": {
+                "$type": "PrototypeContexProvider.src.LocationProvider, PrototypeContexProvider",
+                "URL": "https://restserver.conveyor.cloud/api/watch/GetLocation/zibqmpenzd"
+            },
+            "GivenValue": {
+                "$type": "PrototypeContexProvider.src.Location, PrototypeContexProvider",
+                "Lat": -37.83933,
+                "Lon": 145.2042165
+            },
+            "IContexOperator": {
+                "$type": "PrototypeContexProvider.src.ContexOperators.LocationInRange, PrototypeContexProvider",
+                "Radius": 100
+            }
+            },
+            "Glue": 0,
+            "Not": false
+        }
+        ]
+    }
+}
