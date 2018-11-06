@@ -222,7 +222,7 @@ a.button {
 
             $newURL = 'http://localhost/myphp/' . $newURL;
         
-            echo '<a href=' . $newURL . '>Click here to share</a>';
+            //echo '<a href=' . $newURL . '>Click here to share</a>';
 
             header('Location: '.$newURL);
         }

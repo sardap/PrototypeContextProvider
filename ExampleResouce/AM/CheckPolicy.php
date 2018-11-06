@@ -18,9 +18,10 @@
         
         $authTokken = CheckSecTokken('localhost:44320', $secTokken, $ident);
 
-        $targetURL = 'localhost' . urldecode($_GET['callback']) . '?auth=' . $authTokken;
+        $targetURL = 'http://' . 'localhost' .  urldecode($_GET['callback']) . '?auth=' . $authTokken;
 
-        echo 'TARGET URL: ' .  $targetURL . '</br>';
+        echo $targetURL;
+        header('Location: ' . $targetURL);        
     }
 
 
@@ -127,6 +128,8 @@ a.button {
 </head>
 <body>
     <?php
+
+    echo '<div class="center">';
     
     if(!isset($_SESSION['email']))
     {
@@ -137,9 +140,12 @@ a.button {
         $google_login_url = 'https://accounts.google.com/o/oauth2/v2/auth?scope=' . urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me') . '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID . '&access_type=online';        
 
         echo '<img src="images/stop.svg" alt="No entry" style="width:300px;height:300px;margin:50px;"></br>';
+        echo '<p>Please log in</p></br>';
 
         echo '<a href=' . $google_login_url . ' class="loginBtn loginBtn--google button">Login with Google</a>';
     }
+
+    echo '</div>';
 
     ?>
 </body>

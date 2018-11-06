@@ -1,5 +1,7 @@
 var interval = null;
-var authTokken = document.getElementById("auth").innerHTML;
+var url_string = window.location.href;
+var url = new URL(url_string);
+var authTokken = url.searchParams.get("auth");
 var ready = false;
 
 function httpGetAsync(theUrl, callback)

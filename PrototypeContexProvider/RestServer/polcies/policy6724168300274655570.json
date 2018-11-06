@@ -1,5 +1,5 @@
 {
-  "Id": 2403263712767113334,
+  "Id": 6724168300274655570,
   "Author": "notpaul",
   "Proity": 0,
   "Interval": 0,
@@ -18,17 +18,13 @@
           "Name": "TempTest",
           "Interval": 0,
           "ContextProvider": {
-            "$type": "PrototypeContexProvider.src.LocationProvider, PrototypeContexProvider",
-            "URL": "https://restserver.conveyor.cloud/api/watch/GetLocation/zibqmpenzd",
+            "$type": "PrototypeContexProvider.src.TempurtreContexProvider, PrototypeContexProvider",
+            "CityID": "6952201",
+            "SelectedMessurement": 1
           },
-          "GivenValue": {
-            "$type": "PrototypeContexProvider.src.Location, PrototypeContexProvider",
-            "Lat":-37.83933,
-            "Lon":145.2042165
-          },
+          "GivenValue": 1000,
           "IContexOperator": {
-            "$type": "PrototypeContexProvider.src.ContexOperators.LocationInRange, PrototypeContexProvider",
-            "Radius":100
+            "$type": "PrototypeContexProvider.src.ContexGreaterThan, PrototypeContexProvider"
           }
         },
         "Glue": 0,

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,27 +35,43 @@ namespace RestServer.Controllers
 		private class ConCheckEntry
 		{
 			public long PolicyID;
-			public int UpdateInterval;
-			public double TimeToCheck;
-			public bool LastResult;
-			public TimeSpan NextUpdateTime;
+			private Dictionary<Contex, TimeSpan> _updateIntervals = new Dictionary<Contex, TimeSpan>();
+			private Dictionary<Contex, bool> _results = new Dictionary<Contex, bool>();
 
-			public ConCheckEntry(long policyID, int interval)
+			public ConCheckEntry(long policyID, DataSharingPolciy polciy)
 			{
 				PolicyID = policyID;
-				UpdateInterval = interval;
-				LastResult = false;
-				NextUpdateTime = DateTime.Now.TimeOfDay;
+				
+				foreach(var entry in polciy.JsonCompositeContex.Conteiexs)
+				{
+					if(entry.Contex.Interval > 0)
+					{
+						_updateIntervals.Add(entry.Contex, DateTime.Now.TimeOfDay);
+						_results.Add(entry.Contex, false);
+					}
+				}
 			}
 
-			public void Update()
+			public bool Resolve()
 			{
-				if (DateTime.Now.TimeOfDay> NextUpdateTime)
+				var policy = LoadFromFile(PolicyID);
+
+				foreach (var key in _updateIntervals.Keys.ToArray())
 				{
-					NextUpdateTime = DateTime.Now.TimeOfDay + new TimeSpan(0, 0, 0, 0, (int)UpdateInterval);
-					var policy = LoadFromFile(PolicyID);
-					LastResult = policy.CompositeContex.Check();
+					if(DateTime.Now.TimeOfDay > _updateIntervals[key])
+					{
+						_updateIntervals[key] = DateTime.Now.TimeOfDay + new TimeSpan(0, 0, 0, 0, (int)key.Interval);
+						_results[key] = key.Check();
+					}
 				}
+
+				return _results.All(i => i.Value);
+			}
+
+			public long GetLowestInteveral()
+			{
+				var min = _results.Keys.Min(i => i.Interval);
+				return min;
 			}
 		}
 
@@ -68,7 +85,7 @@ namespace RestServer.Controllers
 
 
 		private static Dictionary<string, ShareTokkenEntry> _shareTokkens = new Dictionary<string, ShareTokkenEntry>();
-		private static Dictionary<string, ConCheckEntry> _conCheckTable = new Dictionary<string, ConCheckEntry>();
+		private static ConcurrentDictionary<string, ConCheckEntry> _conCheckTable = new ConcurrentDictionary<string, ConCheckEntry>();
 
 		public static async Task ExportToFile(long id, DataSharingPolciy polciy)
 		{
@@ -163,13 +180,13 @@ namespace RestServer.Controllers
 				return NotFound();
 			}
 
-			if (item.Interval > 0 && !_conCheckTable.ContainsKey(tokken))
-			{
-				_conCheckTable.Add(tokken, new ConCheckEntry(secTokkenEntry.PolicyID, (int)item.Interval));
-			}
-
 			var comContexResult = item.Check(ident.ToLower());
 			var authTokken = Utils.CreateKey(10);
+
+			if (item.JsonCompositeContex.Conteiexs.Any(i => i.Contex.Interval > 0))
+			{
+				_conCheckTable.TryAdd(authTokken, new ConCheckEntry(secTokkenEntry.PolicyID, item));
+			}
 
 			_authTokken.Add(authTokken, comContexResult);
 
@@ -182,7 +199,16 @@ namespace RestServer.Controllers
 			if (!_authTokken.ContainsKey(tokken))
 				return 0;
 
-			return _authTokken[tokken] ? 1 : 0;
+			var vaildAuth = _authTokken[tokken];
+
+			if(vaildAuth)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
 		}
 
 		[HttpPost("{shareTokken}/{resouceID}")]
@@ -239,6 +265,35 @@ namespace RestServer.Controllers
 		}
 
 
+	
+		[HttpGet("CheckCon/{authTokken}", Name = "CheckCon")]
+		public int CheckCon(string authTokken)
+		{
+			var entry = _conCheckTable[authTokken];
+
+			return entry.Resolve() ? 1 : 0;
+		}
+
+		[HttpGet("CheckCon/GetInterval/{authTokken}", Name = "GetInterval")]
+		public int GetInterval(string authTokken)
+		{
+			var entry = _conCheckTable[authTokken];
+			var lowest = entry.GetLowestInteveral();
+			return (int)lowest;
+		}
+
+		// PUT api/values/5
+		[HttpPut("{id}")]
+		public void Put(int id, [FromBody] string value)
+		{
+		}
+
+		// DELETE api/values/5
+		[HttpDelete("{id}")]
+		public void Delete(int id)
+		{
+		}
+
 		[HttpGet("CheckPolicy/{apiKey}/{tokken}/{resID}/{ident}", Name = "CheckPolicy")]
 		public ActionResult<int> GetById(string apiKey, string tokken, string resID, string ident)
 		{
@@ -257,9 +312,9 @@ namespace RestServer.Controllers
 				return NotFound();
 			}
 
-			if(item.Interval > 0 && !_conCheckTable.ContainsKey(tokken))
+			if (item.JsonCompositeContex.Conteiexs.Any(i => i.Contex.Interval > 0) && !_conCheckTable.ContainsKey(tokken))
 			{
-				_conCheckTable.Add(tokken, new ConCheckEntry(policyID, (int)item.Interval));
+				_conCheckTable.TryAdd(tokken, new ConCheckEntry(policyID, item));
 			}
 
 			if (item.DataConsumer.Value.ToLower() != ident.ToLower())
@@ -272,33 +327,7 @@ namespace RestServer.Controllers
 			return comContexResult ? 1 : 0;
 		}
 
-		
 
-		[HttpGet("CheckCon/{authTokken}", Name = "CheckCon")]
-		public int CheckCon(string authTokken)
-		{
-			var entry = _conCheckTable[authTokken];
-			entry.Update();
 
-			return entry.LastResult ? 1 : 0;
-		}
-
-		[HttpGet("CheckCon/GetInterval/{authTokken}", Name = "GetInterval")]
-		public int GetInterval(string authTokken)
-		{
-			return _conCheckTable[authTokken].UpdateInterval;
-		}
-
-		// PUT api/values/5
-		[HttpPut("{id}")]
-		public void Put(int id, [FromBody] string value)
-		{
-		}
-
-		// DELETE api/values/5
-		[HttpDelete("{id}")]
-		public void Delete(int id)
-		{
-		}
 	}
 }

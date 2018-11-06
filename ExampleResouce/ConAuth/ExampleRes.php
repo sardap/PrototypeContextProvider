@@ -19,9 +19,37 @@
     if($authTokkenUsed)
     {
         $authTokkenVaild = CheckAuthTokken('localhost:44320', $_GET['auth']);
+        echo 'AUTH TOKKEN RESULT: ' . $authTokkenVaild . '</br>';
     }
 
-    $auth = !(!isset($_SESSION['login']) && !($authTokkenUsed && $authTokkenVaild));
+    if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['someAction']))
+    {
+        ?>
+        <style type="text/css">
+        #shareButton {
+            display:none;
+        }
+        </style>
+        <?php
+
+        $apiKey = 'FDBB583AEA18B2DA3142C2F894C0ED42D2074D1FA78CE0B1FFF29D2D740E7FAB48DC54258A4BA06DE6DBE677A1DA4CBB946A0169BEBDB5BC46CF83F3D2891AB352E2081EB0484E759192C3A4891D5F47292F87412864';
+        require_once('../ResFuncs.php');
+
+        $shareToken = GetShareTokken('localhost:44320', $apiKey, $resID);
+
+        $encodedURL = rawurlencode($_SERVER['REQUEST_URI']);
+
+        $newURL = 'AM/ShareRes.php?shareToken=' 
+            . $shareToken
+            . '&resID=' . $resID
+            . '&callback=' . $encodedURL;
+
+        $newURL = 'http://localhost/myphp/' . $newURL;
+    
+        header('Location: '.$newURL);
+    }
+
+    $auth = !(!isset($_SESSION['login']) && !($authTokkenUsed && $authTokkenVaild == 1));
     if($debug)
     {
         echo '</br>POLICY VAILD:' . ($policyVaild ? 'TRUE' : 'FALSE') . '</br>';
@@ -30,7 +58,79 @@
     }
 ?>
 <!DOCTYPE html>
-<script src="main.js"></script>
+<script>
+var interval = null;
+var url_string = window.location.href;
+var url = new URL(url_string);
+var authTokken = url.searchParams.get("auth");
+var ready = false;
+
+function httpGetAsync(theUrl, callback)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send(null);
+}
+
+function Check(responseText)
+{
+    var result = false;
+
+    if(responseText == "1")
+    {
+        result = true;
+    }
+    else if(responseText == "0")
+    {
+        result = false;
+    }
+
+    var elem = document.getElementById('datares');
+    if(!result)
+    {
+        elem.style.display = 'none';
+    }
+    else
+    {
+        elem.style.display = "";
+    }
+
+    ready = true;
+}
+
+function SetUpResponse(responseText)
+{
+    if(interval == null)
+    {
+        interval = parseInt(responseText);
+        window.setInterval( function(){
+            if(ready)
+            {
+                var url = "https://localhost:44320/api/values/CheckCon/" + authTokken; 
+                httpGetAsync(url, Check)
+                ready = false;
+            }
+          },
+        interval)  
+    }
+
+    ready = true;
+}
+
+
+function SetUp()
+{
+    var url = "https://localhost:44320/api/values/CheckCon/GetInterval/" + authTokken; 
+    httpGetAsync(url, SetUpResponse);
+}
+
+if(authTokken != null)
+    SetUp();
+</script>
 <html>
 <head>
 <meta charset="utf-8" />
@@ -132,6 +232,9 @@ a.button {
 </head>
 <body>
     <?php
+        if($authTokkenUsed)
+            echo '<p id="auth">' . $_GET['auth'] . '</p>';
+
         echo '<div class="center">';
         if($auth)
         {
@@ -176,32 +279,6 @@ a.button {
     ?>
 
     <?php
-        if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['someAction']))
-        {
-            ?>
-            <style type="text/css">
-            #shareButton {
-                display:none;
-            }
-            </style>
-            <?php
-
-            $apiKey = 'FDBB583AEA18B2DA3142C2F894C0ED42D2074D1FA78CE0B1FFF29D2D740E7FAB48DC54258A4BA06DE6DBE677A1DA4CBB946A0169BEBDB5BC46CF83F3D2891AB352E2081EB0484E759192C3A4891D5F47292F87412864';
-            require_once('../ResFuncs.php');
-
-            $shareToken = GetShareTokken('localhost:44320', $apiKey, $resID);
-
-            $encodedURL = rawurlencode($_SERVER['REQUEST_URI']);
-
-            $newURL = 'AM/ShareRes.php?shareToken=' 
-                . $shareToken
-                . '&resID=' . $resID
-                . '&callback=' . $encodedURL;
-
-            $newURL = 'http://localhost/myphp/' . $newURL;
-        
-            header('Location: '.$newURL);
-        }
         echo '</div>';
     ?>
 

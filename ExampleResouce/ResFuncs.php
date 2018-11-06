@@ -91,7 +91,7 @@
         //Close the cURL handle.
         curl_close($ch);
         //Print the data out onto the page.
-        return $data == 1 ? true : false;
+        return $data;
     }
 ?>
 
