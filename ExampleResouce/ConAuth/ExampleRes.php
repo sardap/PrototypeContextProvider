@@ -10,24 +10,18 @@
     $resID = str_replace(".php", "", $resID);
     $resID = str_replace(".", "", $resID);
 
-    $tokkenAuth = isset($_GET['auth']) || isset($_SESSION['auth']);
+    $authTokkenUsed = isset($_GET['auth']);
 
     $policyVaild = false;
 
     $debug = false;
 
-    if(isset($_SESSION['email']))
+    if($authTokkenUsed)
     {
-        if($debug)
-        {
-            echo '</br> EMIAL SET</br>';
-            echo '</br> Auth: ' . $_SESSION['auth'] . '</br>';
-        }
-        $apiKey = 'FDBB583AEA18B2DA3142C2F894C0ED42D2074D1FA78CE0B1FFF29D2D740E7FAB48DC54258A4BA06DE6DBE677A1DA4CBB946A0169BEBDB5BC46CF83F3D2891AB352E2081EB0484E759192C3A4891D5F47292F87412864';
-        $policyVaild = CheckPolicy('localhost:44320', $apiKey, $_SESSION['auth'], $resID, $_SESSION['email']) == 1 ? true : false;
+        $authTokkenVaild = CheckAuthTokken('localhost:44320', $_GET['auth']);
     }
 
-    $auth = !(!isset($_SESSION['login']) && !($tokkenAuth && $policyVaild));
+    $auth = !(!isset($_SESSION['login']) && !($authTokkenUsed && $authTokkenVaild));
     if($debug)
     {
         echo '</br>POLICY VAILD:' . ($policyVaild ? 'TRUE' : 'FALSE') . '</br>';
@@ -145,26 +139,12 @@ a.button {
         }
         else
         {
-            if(!$tokkenAuth)
+            if(!$authTokkenUsed)
             {
                 echo '<img src="images/stop.svg" alt="No entry" style="width:300px;height:300px;"></br>';
 
                 $login_url = 'ExampleResLogin.php';
                 echo '<a href=' . $login_url . '>Log in</a>';
-            }
-            else if(!$policyVaild)
-            {
-                require_once('../settings.php');
-
-                $_SESSION['auth'] = $_GET['auth'];
-                $_SESSION['api'] = $apiKey;
-                $_SESSION['callback'] = $_SERVER['REQUEST_URI'];
-
-                $google_login_url = 'https://accounts.google.com/o/oauth2/v2/auth?scope=' . urlencode('https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.me') . '&redirect_uri=' . urlencode(CLIENT_REDIRECT_URL) . '&response_type=code&client_id=' . CLIENT_ID . '&access_type=online';        
-
-                echo '<img src="images/stop.svg" alt="No entry" style="width:300px;height:300px;margin:50px;"></br>';
-
-                echo '<a href=' . $google_login_url . ' class="loginBtn loginBtn--google button">Login with Google</a>';
             }
             else
             {
@@ -179,8 +159,7 @@ a.button {
             echo 'AUTHTOKKENUSED:' . ($tokkenAuth ? 1 : 0) . '</br>';
         }
 
-
-        if($auth && !$tokkenAuth)
+        if($auth && !$authTokkenUsed)
         {
             $login_url = 'localhost\.php?resid=' . $resID;
 
@@ -221,8 +200,6 @@ a.button {
 
             $newURL = 'http://localhost/myphp/' . $newURL;
         
-            echo '<a href=' . $newURL . '>Click here to share</a>';
-
             header('Location: '.$newURL);
         }
         echo '</div>';

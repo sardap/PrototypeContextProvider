@@ -1,5 +1,5 @@
 {
-  "Id": 2403263712767113334,
+  "Id": 7091429320989163568,
   "Author": "notpaul",
   "Proity": 0,
   "Interval": 0,
@@ -22,7 +22,7 @@
             "CityID": "6952201",
             "SelectedMessurement": 1
           },
-          "GivenValue": 1000,
+          "GivenValue": 0,
           "IContexOperator": {
             "$type": "PrototypeContexProvider.src.ContexGreaterThan, PrototypeContexProvider"
           }

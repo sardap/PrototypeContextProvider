@@ -5,12 +5,11 @@
 
     require_once('AMFuncs.php');
 
-    if (!isset($_GET['targeturl']))
-    {
-        echo 'Missing targeturl</br>';
-    }
-    
-    $targetURL = 'localhost' . urldecode($_GET['targeturl'])
+    $secTokken = $_GET['sec'];
+    $callBack = urlencode($_GET['callback']);
+
+    //urldecode($_GET['targeturl'])
+    $targetURL = 'localhost\\myphp\\AM\\CheckPolicy.php?sec=' . $secTokken . '&callback=' . $callBack;
 
 ?>
 <!DOCTYPE html>

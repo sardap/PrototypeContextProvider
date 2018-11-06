@@ -7,8 +7,6 @@
     // Holds the various APIs involved as a PHP class. Download this class at the end of the tutorial
     require_once('google-login-api.php');
 
-    require_once('policyFunc.php');
-
     // Google passes a parameter 'code' in the Redirect Url
     if(isset($_GET['code'])) {
         try {

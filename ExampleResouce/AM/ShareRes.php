@@ -88,9 +88,7 @@ a {
 
             $result = CreateAndApplyPolicy('localhost:44320', $shareTokken, $resID, $data);
 
-            $resURL = urldecode($_GET['callback']) . '?auth=' . $result;
-
-            $newURL = 'ShareResultScreen.php?targeturl=' . urlencode($resURL);
+            $newURL = 'ShareResultScreen.php?sec=' . $result . '&callback=' . urlencode($_GET['callback']);
 
             if(strpos($result, 'ERROR') !== true)
             {
