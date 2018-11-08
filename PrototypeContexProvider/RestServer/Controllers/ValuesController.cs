@@ -10,6 +10,9 @@ using RestServer.Models;
 
 namespace RestServer.Controllers
 {
+	/// <summary>
+	/// AM api endpoints
+	/// </summary>
 	[Route("api/[controller]")]
 	[ApiController]
 	public class ValuesController : ControllerBase
@@ -82,8 +85,6 @@ namespace RestServer.Controllers
 
 		private static Dictionary<string, SecTokenEntry> _secTokken = new Dictionary<string, SecTokenEntry>();
 		private static Dictionary<string, AuthTokenEntry> _authTokken = new Dictionary<string, AuthTokenEntry>();
-
-
 		private static Dictionary<string, ShareTokkenEntry> _shareTokkens = new Dictionary<string, ShareTokkenEntry>();
 		private static ConcurrentDictionary<string, ConCheckEntry> _conCheckTable = new ConcurrentDictionary<string, ConCheckEntry>();
 
@@ -122,26 +123,23 @@ namespace RestServer.Controllers
 			return PolciyResouce.GetInstance().GenrateAndAddAPIKey();
 		}
 
-		[HttpGet("shareTokken/check/{tokken}/{resouceID}", Name = "CheckShareTokken")]
-		public ActionResult<bool> CheckShareTokken(string tokken, string resouceID)
+		[HttpGet("CheckAuthTokken/{tokken}/{resID}", Name = "CheckAuthTokken")]
+		public ActionResult<int> CheckAuthTokken(string tokken, string resID)
 		{
-			var entry = _shareTokkens[tokken];
+			if (!_authTokken.ContainsKey(tokken))
+				return 0;
 
-			return entry.ResID == resouceID;
-		}
+			if (_authTokken[tokken].ResID != resID)
+				return 0;
 
-		[HttpGet("shareTokken/{apiKey}/{resouceID}", Name = "GetShareTokken")]
-		public ActionResult<string> CreateShareTokken(string apiKey, string resouceID)
-		{
-			var pr = PolciyResouce.GetInstance();
-			var apiKeyEntry = pr.OwnershipTable[apiKey];
+			var vaildAuth = _authTokken[tokken].Result;
 
-			if (!apiKeyEntry.PolciesResocuce.ContainsKey(resouceID))
-				return NotFound();
+			if(!vaildAuth)
+			{
+				return 0;
+			}
 
-			var newTokken = Utils.CreateKey(10);
-			_shareTokkens[newTokken] = new ShareTokkenEntry { ApiKey = apiKey, ResID = resouceID };
-			return newTokken;
+			return 1;
 		}
 
 		[HttpGet("CheckSecTokken/{tokken}/{ident}", Name = "CheckSecTokken")]
@@ -163,28 +161,9 @@ namespace RestServer.Controllers
 				_conCheckTable.TryAdd(authTokken, new ConCheckEntry(secTokkenEntry.PolicyID, item));
 			}
 
-			_authTokken.Add(authTokken, new AuthTokenEntry() { ResID = _secTokken[tokken].ResID, Result = comContexResult } );
+			_authTokken.Add(authTokken, new AuthTokenEntry() { ResID = _secTokken[tokken].ResID, Result = comContexResult });
 
 			return authTokken;
-		}
-
-		[HttpGet("CheckAuthTokken/{tokken}/{resID}", Name = "CheckAuthTokken")]
-		public ActionResult<int> CheckAuthTokken(string tokken, string resID)
-		{
-			if (!_authTokken.ContainsKey(tokken))
-				return 0;
-
-			if (_authTokken[tokken].ResID != resID)
-				return 0;
-
-			var vaildAuth = _authTokken[tokken].Result;
-
-			if(!vaildAuth)
-			{
-				return 0;
-			}
-
-			return 1;
 		}
 
 		[HttpPost("{shareTokken}/{resouceID}")]
@@ -193,7 +172,7 @@ namespace RestServer.Controllers
 
 			if (polciy.Id == null)
 			{
-				//TODO make this not shit
+				//TODO make this not bad
 				polciy.Id = Utils.LongRandom(_random);
 			}
 
@@ -221,27 +200,33 @@ namespace RestServer.Controllers
 				ExportToFile(id, polciy);
 
 				return newTokken;
-
-				var policyRes = polciyResouce.OwnershipTable[apiKey].PolciesResocuce;
-
-				if (!policyRes.ContainsKey(resouceID))
-				{
-					policyRes.Add(resouceID, new Dictionary<string, long>());
-				}
-
-
-				policyRes[resouceID].Add(newTokken, id);
-				_dataSharingPolcies.Add(id);
-				ExportToFile(id, polciy);
-				polciyResouce.SaveDB();
-				return newTokken;
 			}
 
 			return "FAILLED";
 		}
 
+		[HttpGet("shareTokken/check/{tokken}/{resouceID}", Name = "CheckShareTokken")]
+		public ActionResult<bool> CheckShareTokken(string tokken, string resouceID)
+		{
+			var entry = _shareTokkens[tokken];
 
-	
+			return entry.ResID == resouceID;
+		}
+
+		[HttpGet("shareTokken/{apiKey}/{resouceID}", Name = "GetShareTokken")]
+		public ActionResult<string> CreateShareTokken(string apiKey, string resouceID)
+		{
+			var pr = PolciyResouce.GetInstance();
+			var apiKeyEntry = pr.OwnershipTable[apiKey];
+
+			if (!apiKeyEntry.PolciesResocuce.ContainsKey(resouceID))
+				return NotFound();
+
+			var newTokken = Utils.CreateKey(10);
+			_shareTokkens[newTokken] = new ShareTokkenEntry { ApiKey = apiKey, ResID = resouceID };
+			return newTokken;
+		}
+
 		[HttpGet("CheckCon/{authTokken}", Name = "CheckCon")]
 		public int CheckCon(string authTokken)
 		{
@@ -257,53 +242,5 @@ namespace RestServer.Controllers
 			var lowest = entry.GetLowestInteveral();
 			return (int)lowest;
 		}
-
-		// PUT api/values/5
-		[HttpPut("{id}")]
-		public void Put(int id, [FromBody] string value)
-		{
-		}
-
-		// DELETE api/values/5
-		[HttpDelete("{id}")]
-		public void Delete(int id)
-		{
-		}
-
-		[HttpGet("CheckPolicy/{apiKey}/{tokken}/{resID}/{ident}", Name = "CheckPolicy")]
-		public ActionResult<int> GetById(string apiKey, string tokken, string resID, string ident)
-		{
-			var pr = PolciyResouce.GetInstance();
-			var apiPR = pr.OwnershipTable[apiKey];
-			var polciyRes = apiPR.PolciesResocuce[resID];
-
-			if (!polciyRes.ContainsKey(tokken))
-				return NotFound();
-
-			var policyID = polciyRes[tokken];
-
-			var item = LoadFromFile(policyID);
-			if (item == null)
-			{
-				return NotFound();
-			}
-
-			if (item.JsonCompositeContex.Conteiexs.Any(i => i.Contex.Interval > 0) && !_conCheckTable.ContainsKey(tokken))
-			{
-				_conCheckTable.TryAdd(tokken, new ConCheckEntry(policyID, item));
-			}
-
-			if (item.DataConsumer.Value.ToLower() != ident.ToLower())
-			{
-				return 0;
-			}
-
-			var comContexResult = item.CompositeContex.Check();
-
-			return comContexResult ? 1 : 0;
-		}
-
-
-
 	}
 }

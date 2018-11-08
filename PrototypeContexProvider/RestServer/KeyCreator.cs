@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 
 namespace RestServer
 {
+	[Obsolete]
 	public class KeyCreator
 	{
 		public string CreateKey(int numBytes)

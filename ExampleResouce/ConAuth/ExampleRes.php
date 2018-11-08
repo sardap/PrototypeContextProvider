@@ -14,12 +14,14 @@
 
     $policyVaild = false;
 
-    $debug = false;
+    $debug = isset($_GET['debug']) && $_GET['debug'] == 1;
 
     if($authTokkenUsed)
     {
         $authTokkenVaild = CheckAuthTokken('localhost:44320', $_GET['auth'], $resID);
-        echo 'AUTH TOKKEN RESULT: ' . $authTokkenVaild . '</br>';
+
+        if($debug)
+            echo 'AUTH TOKKEN RESULT: ' . $authTokkenVaild . '</br>';
     }
 
     if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['someAction']))
@@ -33,7 +35,6 @@
         <?php
 
         $apiKey = 'FDBB583AEA18B2DA3142C2F894C0ED42D2074D1FA78CE0B1FFF29D2D740E7FAB48DC54258A4BA06DE6DBE677A1DA4CBB946A0169BEBDB5BC46CF83F3D2891AB352E2081EB0484E759192C3A4891D5F47292F87412864';
-        require_once('../ResFuncs.php');
 
         //$resID = rawurlencode($_SERVER['REQUEST_URI']);
 
@@ -94,13 +95,16 @@ function Check(responseText)
     }
 
     var elem = document.getElementById('datares');
+    var revokeMessage = document.getElementById('revokeMessage');
     if(!result)
     {
         elem.style.display = 'none';
+        revokeMessage.style.display = "";
     }
     else
     {
         elem.style.display = "";
+        revokeMessage.style.display = "none";
     }
 
     ready = true;
@@ -171,13 +175,14 @@ a.button {
 </head>
 <body>
     <?php
-        if($authTokkenUsed)
+        if($authTokkenUsed && $debug)
             echo '<p id="auth">' . $_GET['auth'] . '</p>';
 
         echo '<div class="center">';
         if($auth)
         {
-            echo '</br><iframe id="datares" width="560" height="315" src="https://www.youtube.com/embed/live_stream?channel=UCaCByf9MOMDmalzR79tFtjw" frameborder="0" allowfullscreen></iframe></br>';            
+            echo '</br><iframe id="datares" width="1500" height="700" src="https://www.youtube.com/embed/live_stream?channel=UCaCByf9MOMDmalzR79tFtjw" frameborder="0" allowfullscreen></iframe>';            
+            echo '<p id="revokeMessage" style="display:none" >You have been Revoked access</p></br>';
         }
         else
         {

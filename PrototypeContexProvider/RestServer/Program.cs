@@ -14,13 +14,12 @@ namespace RestServer
 {
 	public class Program
 	{
-		public static async Task SetupPCP()
+		public static async Task Setup()
 		{
+			//Loaded in API keys for contex providers
 			dynamic dAPIKeys = await PrototypeContexProvider.src.Utils.ReadFromJson(
 				@"C:\Users\pfsar\OneDrive\Documents\GitHub\PrototypeContextProvider\PrototypeContexProvider\APIKeys.json"
 			);
-
-			var apiKey = "BD47FFBF33D2AB936499267B902C868C7311294D7399BDF266A75D888DA7648099F61288723D1146310A0BA9FB2FDD52A6D311C6140DE939D2945991846EF87A970D3D1912E391CB34C309F0AE083F31825379D5B29B";
 
 			APIKeyManger.GetInstance().ReadIn(dAPIKeys);
 			PolciyResouce.GetInstance().LoadDB();
@@ -29,7 +28,7 @@ namespace RestServer
 
 		public static void Main(string[] args)
 		{
-			SetupPCP().Wait();
+			Setup().Wait();
 
 			CreateWebHostBuilder(args).Build().Run();
 		}

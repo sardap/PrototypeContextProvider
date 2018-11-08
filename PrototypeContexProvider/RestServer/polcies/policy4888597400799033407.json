@@ -1,17 +1,19 @@
 {
-  "Id": 7287767385498657384,
-  "Author": "notpaul",
+  "Id": 4888597400799033407,
+  "Author": "Leon",
   "Proity": 0,
-  "Interval": 0,
-  "Decision": "garbage",
+  "Interval": -1,
+  "Decision": "Example",
   "DataConsumer": {
     "Id": 0,
-    "Name": "paul",
+    "Name": "Paul",
     "Value": "pfsarda23@gmail.com"
   },
   "JsonCompositeContex": {
+    "Id": 0,
     "Conteiexs": [
       {
+        "Id": 0,
         "Contex": {
           "Name": "locaitonTest",
           "Interval": 5000,
@@ -30,20 +32,20 @@
           }
         },
         "Glue": 0,
-        "Not": false
+        "Not": true
       }
     ]
   },
   "PrivacyOblgations": {
-    "Purpose": "garbage",
-    "Granularity": "garbage",
-    "Anonymisation": "garbage",
-    "Notifaction": "garbage",
-    "Accounting": "garbage"
+    "Purpose": "Keep on eye when im not home",
+    "Granularity": "None",
+    "Anonymisation": "none",
+    "Notifaction": "none",
+    "Accounting": "none"
   },
   "ResharingObligations": {
-    "CanShare": true,
-    "Cardinality": 10,
-    "Recurring": 10
+    "CanShare": false,
+    "Cardinality": 0,
+    "Recurring": 0
   }
 }

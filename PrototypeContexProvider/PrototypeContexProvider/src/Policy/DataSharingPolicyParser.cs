@@ -91,69 +91,6 @@ namespace PrototypeContexProvider.src
 			dataSharingPolicy.CompositeContex = dataSharingPolicy.JsonCompositeContex.ToCompositeContex();
 
 			return dataSharingPolicy;
-			/*
-			DataSharingPolicy dataSharingPolicy = new DataSharingPolicy();
-
-			dynamic jsonDataSharingPolicy = jsonVersion.dataSharingPolicy;
-
-			dataSharingPolicy.ID = jsonDataSharingPolicy.id;
-			dataSharingPolicy.Author = jsonDataSharingPolicy.author;
-			dataSharingPolicy.Proity = jsonDataSharingPolicy.prority;
-			dataSharingPolicy.Decision = jsonDataSharingPolicy.decision;
-
-			dataSharingPolicy.DataConsumer = new DataConsumer
-			{
-				Name = jsonDataSharingPolicy.dataConsumer.name,
-				Value = jsonDataSharingPolicy.dataConsumer.value
-			};
-
-			dataSharingPolicy.CompositeContex = new CompositeContex();
-
-			foreach (dynamic contex in jsonDataSharingPolicy.compositeContex)
-			{
-				dynamic provider;
-
-				switch ((string)contex.provider)
-				{
-					case "DateTimeProvider":
-						provider = new DateTimeProvider();
-						break;
-
-					default:
-						throw new InvaildProviderExpection();
-				}
-
-				IContexOperator contexOperator;
-
-				switch((string)contex.cOperator)
-				{
-					case "GTE":
-						contexOperator = new ContexGreaterThanOrEqual();
-						break;
-
-					default:
-						throw new InvaildContexOpreatorExpection();
-				}
-
-				Type test = contex.value.GetType();
-
-				if (contex.value.Value.GetType() == typeof(long))
-				{
-					var temp = new Contex<long>
-					{
-						Name = contex.name,
-						Operator = contexOperator,
-						GivenValue = contex.value.Value,
-						ContextProvider = provider
-					};
-
-					dataSharingPolicy.CompositeContex.Add(temp);
-				}
-
-			}
-
-			return dataSharingPolicy;
-			*/
 		}
     }
 }

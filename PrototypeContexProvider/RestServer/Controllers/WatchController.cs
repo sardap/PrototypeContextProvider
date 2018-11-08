@@ -9,6 +9,9 @@ using RestServer.Models;
 
 namespace RestServer.Controllers
 {
+	/// <summary>
+	/// Used for IOT devicess to have somehwere to send their data
+	/// </summary>
 	[Route("api/[controller]")]
 	[ApiController]
 	public class WatchController : ControllerBase
